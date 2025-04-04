@@ -3,12 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css"> <!-- Updated to match your CSS filename -->
     <title>Events Calendar</title>
-    
 </head>
 <body>
-
-    
+    <header>
+        <h1>Events Calendar</h1>
+        <nav>
+            <input type="text" placeholder="Search events..." id="search-bar">
+            <button id="add-event">Add New Event</button>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Upcoming Events</h2>
+            <div class="event-list">
+                <div class="event-item">
+                    <h3>Event Title</h3>
+                    <p>Date: <span>MM/DD/YYYY</span></p>
+                    <button class="edit">Edit</button>
+                    <button class="delete">Delete</button>
+                </div>
+                <!-- Repeat the event-item div for more events -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Your University. All rights reserved.</p>
+    </footer>
 </body>
 </html>
+
+
+
+
+
 <!-- Abdulrahman khalid 202107673 phase 1 events-calendar -->
