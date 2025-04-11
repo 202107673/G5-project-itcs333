@@ -13,6 +13,8 @@ header {
 footer {
     background-color: #007BFF;
     color: white;
+    text-align: center;
+    padding: 20px;
 }
 
 body {
