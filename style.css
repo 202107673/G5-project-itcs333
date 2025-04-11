@@ -30,12 +30,17 @@ main {
 
 .note {
     text-align: center;
-    background-color: white;
-    width: 22em;
+    background: white;
+    width: 21.25em;
     margin: 15px;
-    padding: 15px;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.4s ease;
+}
+
+.note:hover {
+    transform: scale(1.1);
 }
 
 a {
