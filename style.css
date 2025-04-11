@@ -5,3 +5,16 @@
     scroll-behavior: smooth;
 }
 
+header {
+    background-color: #007BFF;
+    color: white;
+}
+
+footer {
+    background-color: #007BFF;
+    color: white;
+}
+
+body {
+    background-color: #f4f4f4;
+}
