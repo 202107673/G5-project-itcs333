@@ -8,6 +8,9 @@
 header {
     background-color: #007BFF;
     color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 200px;
 }
 
 footer {
