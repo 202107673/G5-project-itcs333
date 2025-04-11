@@ -11,6 +11,11 @@ header {
     display: flex;
     justify-content: space-between;
     padding: 20px 200px;
+    align-items: center;
+}
+
+header a {
+    color: white;
 }
 
 footer {
@@ -41,6 +46,17 @@ main {
 
 .note:hover {
     transform: scale(1.1);
+}
+
+.note div {
+    padding-bottom: 20px;
+}
+
+.note a {
+    border-radius: 5px;
+    padding: 6px 12px;
+    background-color: #007BFF;
+    color: white;
 }
 
 a {
