@@ -53,3 +53,10 @@ a {
     justify-content: right;
     padding: 10px 200px;
 }
+
+.btn-section button {
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    background-color: white;
+}
