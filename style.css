@@ -41,3 +41,15 @@ a {
     text-decoration: none;
     color: black;
 }
+
+.main-section {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-section {
+    display: flex;
+    justify-content: right;
+    padding: 10px 200px;
+}
