@@ -27,3 +27,12 @@ body {
 main {
     min-height: 100vh;
 }
+
+.note {
+    text-align: center;
+    background-color: white;
+    width: 22em;
+    margin: 15px;
+    padding: 15px;
+    border-radius: 10px;
+}
