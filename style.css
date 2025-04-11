@@ -52,6 +52,7 @@ a {
     display: flex;
     justify-content: right;
     padding: 10px 200px;
+    align-items: center;
 }
 
 button {

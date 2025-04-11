@@ -11,14 +11,35 @@
         <h1>Course Notes</h1>
         <div>
             <input type="text" class="search" placeholder="Search For Notes">
-            <button>Filter</button>
+            <!-- <button>Filter</button> -->
+            <select name="filter">
+                <option>Filter</option>
+                <option>potion one</option>
+                <option>potion two</option>
+                <option>potion three</option>
+            </select>
         </div>
     </header>
 
     <main>
         <section class="btn-section">
-            <button title="sort">Sort</button>
-            <button title="Add Note">Add Note</button>
+            <div>
+                <a href="error.html">&laquo;</a>
+                <a href="error.html">1</a>
+                <a href="error.html">2</a>
+                <a href="error.html">3</a>
+                <a href="error.html">&raquo;</a>
+            </div>
+            <div>
+                <!-- <button title="sort">Sort</button> -->
+                <select name="sort">
+                    <option>Sort by Name (a-z)</option>
+                    <option>Sort by Name (z-a)</option>
+                    <option>Sort by Newest</option>
+                    <option>Sort by Oldest</option>
+                </select>
+                <button title="Add Note">Add Note</button>
+            </div>
         </section>
 
         <section class="main-section">
