@@ -165,7 +165,7 @@ select {
     width: 80%;
 }
 
-.comments h4 {
+.comments label {
     margin-bottom: 30px;
 }
 
@@ -182,9 +182,98 @@ select {
 }
 
 .comment-input {
-    min-height: 50px;
     padding: 8px;
     border: none;
     border-radius: 10px;
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+.create-body {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.create-section {
+    width: 50%;
+    /* display: flex;
+    justify-content: center; */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+#head-create {
+    width: 95%;
+    padding: 20px;  
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+}
+
+#head-create p {
+    color: white;
+    padding-top: 10px;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.form div {
+    align-items: center;
+}
+
+.form label {
+    padding: 50px;
+}
+
+.create-body {
+    min-height: 0;
+}
+
+.create-btn {
+    display: flex;
+    justify-content: center;
+}
+
+.create-btn a {
+    margin: 5px;
+    border-radius: 5px;
+    padding: 6px 10px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+input[type="text"], 
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, 
+textarea:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 500;
+    color: #333;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
 }
