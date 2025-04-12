@@ -8,37 +8,37 @@
 </head>
 <body>
     <header>
-        <h1>Create New Event</h1>
+        <h1>Create Event</h1>
         <nav>
-            <a href="index.html">Back to Calendar</a>
+            <a href="event.html" class="nav-link">&larr; Back to Events</a>
         </nav>
     </header>
 
     <main>
-        <form>
-            <div>
-                <label for="title">Event Title <span class="required"></span></label>
-                <input type="text" id="title" name="title" required>
+        <form class="event-form">
+            <div class="form-group">
+                <label for="event-title">Event Title <span class="required"></span></label>
+                <input type="text" id="event-title" name="title" required>
             </div>
 
-            <div>
-                <label for="date">Event Date <span class="required"></span></label>
-                <input type="date" id="date" name="date" required>
+            <div class="form-group">
+                <label for="event-date">Date <span class="required"></span></label>
+                <input type="date" id="event-date" name="date" required>
             </div>
 
-            <div>
-                <label for="location">Location <span class="required"></span></label>
-                <input type="text" id="location" name="location" required>
+            <div class="form-group">
+                <label for="event-location">Location <span class="required"></span></label>
+                <input type="text" id="event-location" name="location" required>
             </div>
 
-            <div>
-                <label for="description">Description</label>
-                <textarea id="description" name="description" rows="4"></textarea>
+            <div class="form-group">
+                <label for="event-description">Description</label>
+                <textarea id="event-description" rows="4"></textarea>
             </div>
 
             <div class="buttons">
                 <button type="submit" class="button">Create Event</button>
-                <a href="index.html" class="button">Cancel</a>
+                <a href="event.html" class="button cancel">Cancel</a>
             </div>
         </form>
     </main>
