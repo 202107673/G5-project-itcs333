@@ -247,8 +247,7 @@ select {
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
 }
 
-input[type="text"], 
-textarea {
+.comments input[type="text"], .form input[type="text"], textarea {
     width: 100%;
     padding: 10px;
     margin-top: 8px;
@@ -259,8 +258,7 @@ textarea {
     transition: border-color 0.3s ease;
 }
 
-input[type="text"]:focus, 
-textarea:focus {
+input[type="text"]:focus, textarea:focus {
     outline: none;
     border-color: #007BFF;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
