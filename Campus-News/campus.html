@@ -3,125 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Stay updated with the latest news from Campus Hub." />
   <title>Campus Hub - News</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
 
   <!-- Header -->
-  <header class="bg-blue-700 text-white p-4">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Campus Hub - News</h1>
+  <header class="header">
+    <div class="container">
+      <h1 class="title">Campus Hub - News</h1>
       <nav>
-        <a href="#" class="text-white hover:underline">Home</a>
+        <a href="#" class="nav-link">Home</a>
       </nav>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 py-6">
+  <main class="container">
 
-    <!-- === Main Listing Page === -->
-    <section class="mb-12" id="news-listing">
-      <div class="flex flex-col md:flex-row justify-between items-center mb-4">
-        <div class="w-full md:w-1/2 mb-4 md:mb-0">
-          <input type="text" placeholder="Search news..." class="w-full border border-gray-300 rounded px-3 py-2" />
-        </div>
-        <div class="flex gap-2">
-          <select class="border border-gray-300 rounded px-2 py-1">
-            <option>Sort by Date</option>
-            <option>Sort by Title</option>
-          </select>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add News</button>
-        </div>
+    <!-- News Listing -->
+    <section class="news-listing">
+      <div class="search-sort">
+        <input type="text" placeholder="Search news..." class="search-input" />
+        <select class="sort-select">
+          <option>Sort by Date</option>
+          <option>Sort by Title</option>
+        </select>
+        <a href="add-news.html" class="add-button">Add News</a>
       </div>
 
       <!-- News Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <article class="bg-white border rounded shadow p-4">
-          <h2 class="text-lg font-semibold mb-2">New Library Hours Announced</h2>
-          <p class="text-sm text-gray-600 mb-2">April 10, 2025</p>
-          <p class="text-gray-700 mb-4">The university library will now be open until midnight on weekdays...</p>
-          <a href="#" class="text-blue-600 font-medium hover:underline">Read More</a>
+      <div class="news-grid">
+        <article class="news-item">
+          <h2 class="news-title">New Library Hours Announced</h2>
+          <p class="news-date">April 10, 2025</p>
+          <p class="news-content">The university library will now be open until midnight on weekdays...</p>
+          <a href="details.html" class="add-button">Add News</a>
         </article>
         <!-- Repeat for more news items -->
       </div>
 
-      <!-- Pagination (Design Only) -->
-      <div class="flex justify-center mt-6">
-        <nav class="flex gap-2">
-          <button class="px-3 py-1 border rounded text-gray-600">Prev</button>
-          <button class="px-3 py-1 border rounded bg-blue-600 text-white">1</button>
-          <button class="px-3 py-1 border rounded text-gray-600">2</button>
-          <button class="px-3 py-1 border rounded text-gray-600">Next</button>
-        </nav>
+      <!-- Pagination -->
+      <div class="pagination">
+        <button class="pagination-button">Prev</button>
+        <button class="pagination-button active">1</button>
+        <button class="pagination-button">2</button>
+        <button class="pagination-button">Next</button>
       </div>
     </section>
 
-    <!-- === Item Creation Form === -->
-    <section class="mb-12" id="news-form">
-      <h2 class="text-xl font-bold mb-4">Add News Article</h2>
-      <form class="bg-white border rounded shadow p-6 space-y-4">
-        <div>
-          <label for="title" class="block font-medium">Title <span class="text-red-500">*</span></label>
-          <input type="text" id="title" name="title" required placeholder="News title" class="w-full border border-gray-300 rounded px-3 py-2" />
-        </div>
-        <div>
-          <label for="author" class="block font-medium">Author <span class="text-red-500">*</span></label>
-          <input type="text" id="author" name="author" required placeholder="Author name" class="w-full border border-gray-300 rounded px-3 py-2" />
-        </div>
-        <div>
-          <label for="date" class="block font-medium">Date <span class="text-red-500">*</span></label>
-          <input type="date" id="date" name="date" required class="w-full border border-gray-300 rounded px-3 py-2" />
-        </div>
-        <div>
-          <label for="content" class="block font-medium">Content <span class="text-red-500">*</span></label>
-          <textarea id="content" name="content" rows="5" required placeholder="Write the full news content here..." class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
-        </div>
-        <div class="flex gap-4">
-          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Submit</button>
-          <button type="reset" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- === Item Detail View === -->
-    <section id="news-detail">
-      <article class="bg-white border rounded shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">New Cafeteria Menu Released</h2>
-        <p class="text-sm text-gray-600 mb-1">By Jane Doe &middot; April 11, 2025</p>
-        <div class="my-4 text-gray-800">
+   
+    <!-- Item Detail View -->
+    <section class="news-detail">
+      <article class="detail-item">
+        <h2 class="detail-title">New Cafeteria Menu Released</h2>
+        <p class="detail-date">By Jane Doe &middot; April 11, 2025</p>
+        <div class="detail-content">
           <p>The university cafeteria has released a new menu that includes more vegetarian and vegan options. Students can check the updated menu starting this Monday.</p>
         </div>
 
-        <div class="flex gap-4 mt-6">
-          <button class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</button>
-          <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Delete</button>
+        <div class="detail-actions">
+          <button class="edit-button">Edit</button>
+          <button class="delete-button">Delete</button>
         </div>
 
-        <!-- Comments Section (Design Only) -->
-        <div class="mt-8">
-          <h3 class="text-lg font-semibold mb-2">Comments</h3>
-          <div class="space-y-4">
-            <div class="border-t pt-2">
-              <p class="font-medium">Alex Smith</p>
-              <p class="text-sm text-gray-700">This is a great update! Looking forward to trying the new options.</p>
-            </div>
-            <div class="border-t pt-2">
-              <p class="font-medium">Taylor Johnson</p>
-              <p class="text-sm text-gray-700">Hope the prices remain student-friendly!</p>
-            </div>
+        <div class="comments-section">
+          <h3 class="comments-title">Comments</h3>
+          <div class="comment">
+            <p class="comment-author">Ahmed Adel</p>
+            <p class="comment-text">This is a great update! Looking forward to trying the new options.</p>
+          </div>
+          <div class="comment">
+            <p class="comment-author">Ali Naser</p>
+            <p class="comment-text">Hope the prices remain student-friendly!</p>
           </div>
         </div>
 
-        <a href="#news-listing" class="block mt-6 text-blue-600 hover:underline">← Back to News Listing</a>
+        <a href="#news-listing" class="back-link">← Back to home page</a>
       </article>
     </section>
 
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gray-200 text-center text-sm py-4 mt-12">
-    &copy; 2025 Campus Hub. All rights reserved.
+  <footer class="footer">
+    <p>&copy; 2025 Campus Hub. All rights reserved.</p>
   </footer>
 
 </body>
