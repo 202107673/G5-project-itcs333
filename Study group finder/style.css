@@ -81,14 +81,3 @@ select {
     margin-top: 25px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    main {
-        margin: 20px;
-        padding: 20px;
-    }
-    
-    .grid-container {
-        grid-template-columns: 1fr;
-    }
-}
