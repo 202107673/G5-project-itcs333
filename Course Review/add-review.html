@@ -4,12 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Add Course Review</title>
-  <link rel="stylesheet" href="Review.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
     <h1>Add Course Review</h1>
   </header>
 
+  <main class="container">
+    <form>
+      <label for="course">Course Code</label>
+      <input type="text" id="course" name="course" required placeholder="e.g. CS101"/>
+
+      <label for="instructor">Instructor Name</label>
+      <input type="text" id="instructor" name="instructor" required />
+
+      <label for="rating">Rating (1-5)</label>
+      <input type="number" id="rating" name="rating" min="1" max="5" required />
+
+      <label for="review">Your Review</label>
+      <textarea id="review" name="review" rows="5" required></textarea>
+
+      <label for="difficulty">Difficulty</label>
+      <select id="difficulty" name="difficulty" required>
+      <option value="">Select difficulty</option>
+      <option value="Easy">Easy</option>
+      <option value="Moderate">Moderate</option>
+      <option value="Hard">Hard</option>
+    </select>
+
+
+      <button type="submit">Submit Review</button>
+      <a href="index.html"><button type="button">Cancel</button></a>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Campus Hub</p>
+  </footer>
 </body>
 </html>
