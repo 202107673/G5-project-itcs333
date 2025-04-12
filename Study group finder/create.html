@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Study Group</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h1>Edit Study Group</h1>
+        <form>
+            <!-- Same fields as create-group.html but with pre-filled values -->
+            <label for="group-name" class="required">Group Name</label>
+            <input type="text" id="group-name" name="group-name" required value="Calculus Study Buddies">
+
+            <label for="subject" class="required">Subject</label>
+            <input type="text" id="subject" name="subject" required value="Calculus I">
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4">Weekly study sessions for Calculus I students preparing for midterms</textarea>
+
+            <label for="location" class="required">Location</label>
+            <input type="text" id="location" name="location" required value="Library Room 204">
+
+            <label for="meeting-time" class="required">Meeting Time</label>
+            <input type="datetime-local" id="meeting-time" name="meeting-time" required>
+
+            <label for="contact" class="required">Contact Email</label>
+            <input type="email" id="contact" name="contact" required value="john@university.edu">
+
+            <div class="button-group">
+                <button type="submit">Save Changes</button>
+                <a href="group-details.html" role="button" class="secondary">Cancel</a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
