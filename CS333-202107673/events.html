@@ -4,115 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Hub - Events Calendar</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Main Listing Page -->
-    <header class="container">
-        <h1>Events Calendar</h1>
+    <!-- Header -->
+    <header>
+        <h1>Campus Hub - Events Calendar</h1>
         <nav>
-            <a href="#listing" class="secondary">All Events</a>
-            <a href="#create" class="secondary">New Event</a>
+            <a href="#main-content">Skip to Content</a>
         </nav>
     </header>
 
-    <main class="container">
-        <section id="listing">
-            <div class="controls">
-                <input type="search" placeholder="Search events...">
-                <select>
-                    <option>Filter by Category</option>
-                    <option>Academic</option>
-                    <option>Social</option>
-                </select>
-                <select>
-                    <option>Sort by Date</option>
-                    <option>Newest First</option>
-                </select>
-            </div>
-
-            <div class="grid">
-                <article class="event-card">
-                    <h3>CS Department Workshop</h3>
-                    <p>📅 March 15, 2024</p>
-                    <p>📍 Computer Lab B</p>
-                    <a href="#detail" class="button">View Details</a>
-                </article>
-                <!-- More event cards -->
-            </div>
-
-            <div class="pagination">
-                <button>1</button>
-                <button>2</button>
-                <button>Next →</button>
-            </div>
-            
-            <a href="#create" role="button" class="contrast">+ New Event</a>
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Controls Section -->
+        <section class="controls">
+            <input type="search" placeholder="Search events..." aria-label="Search events">
+            <select aria-label="Filter events">
+                <option>All Events</option>
+                <option>Upcoming</option>
+                <option>Past</option>
+            </select>
+            <select aria-label="Sort events">
+                <option>Date (Newest)</option>
+                <option>Date (Oldest)</option>
+                <option>Event Name</option>
+            </select>
+            <a href="create.html" class="button">Add New Event</a>
         </section>
 
-        <!-- Item Creation Form -->
-        <section id="create" hidden>
-            <h2>Create New Event</h2>
-            <form>
-                <label for="title">
-                    Event Title <span class="required">*</span>
-                    <input type="text" id="title" name="title" required>
-                </label>
-                
-                <div class="grid">
-                    <label for="date">
-                        Date <span class="required">*</span>
-                        <input type="date" id="date" required>
-                    </label>
-                    <label for="location">
-                        Location <span class="required">*</span>
-                        <input type="text" id="location" required>
-                    </label>
-                </div>
-
-                <label for="description">
-                    Description
-                    <textarea id="description" rows="3"></textarea>
-                </label>
-
-                <div class="buttons">
-                    <button type="submit" class="contrast">Create Event</button>
-                    <a href="#listing" class="secondary">Cancel</a>
-                </div>
-            </form>
-        </section>
-
-        <!-- Item Detail View -->
-        <section id="detail" hidden>
-            <article>
-                <h2>CS Department Workshop</h2>
+        <!-- Events Grid -->
+        <section class="grid">
+            <!-- Event Card 1 -->
+            <article class="event-card">
+                <h2>Career Fair 2025</h2>
                 <div class="meta">
-                    <span>📅 March 15, 2024</span>
-                    <span>📍 Computer Lab B</span>
+                    <span>📅 March 15, 2025</span>
+                    <span>📍 Main Quad</span>
                 </div>
-                <p>Annual computer science workshop covering latest trends in AI.</p>
-                
-                <div class="actions">
-                    <button class="secondary">Edit</button>
-                    <button class="contrast">Delete</button>
-                </div>
-
-                <section class="comments">
-                    <h3>Comments (2)</h3>
-                    <article class="comment">
-                        <p>Looking forward to this!</p>
-                        <small>– John Doe</small>
-                    </article>
-                </section>
-
-                <a href="#listing" class="secondary">← Back to Events</a>
+                <p>Annual university career fair with 100+ companies...</p>
+                <a href="detail.html" class="button">View Details</a>
             </article>
+
+            <!-- Additional event cards would follow same structure -->
         </section>
+
+        <!-- Pagination -->
+        <nav class="pagination">
+            <a href="#" aria-label="Previous page">&laquo;</a>
+            <a href="#" aria-current="page">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#" aria-label="Next page">&raquo;</a>
+        </nav>
     </main>
 
-    <footer class="container">
-        <small>© 2025 Campus Hub</small>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Campus Hub. All rights reserved.</p>
     </footer>
 </body>
 </html>
