@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add New Club</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Add a New Club</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="add-club.html">Add Club</a>
+      <a href="manage-clubs.html">Manage Clubs</a>
+    </nav>
+  </header>
+
+  <main>
+    <form class="club-form">
+      <label for="club-name">Club Name</label>
+      <input type="text" id="club-name" name="club-name" required>
+
+      <label for="club-desc">Description</label>
+      <textarea id="club-desc" name="club-desc" rows="5" required></textarea>
+
+      <label for="club-category">Category</label>
+      <input type="text" id="club-category" name="club-category">
+
+      <label for="club-email">Contact Email</label>
+      <input type="email" id="club-email" name="club-email">
+
+      <button type="submit">Add Club</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 University Club Activities</p>
+  </footer>
+</body>
+</html>
