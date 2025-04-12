@@ -204,11 +204,13 @@ select {
 }
 
 #head-create {
-    width: 95%;
+    width: 100%;
     padding: 20px;  
     border-radius: 5px;
     background-color: #007BFF;
     color: white;
+    margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 #head-create p {
@@ -274,4 +276,113 @@ label {
 textarea {
     min-height: 120px;
     resize: vertical;
+}
+
+@media (max-width: 1200px) {
+    header, .btn-section {
+        padding: 20px 100px;
+    }
+}
+
+@media (max-width: 992px) {
+    header, .btn-section {
+        padding: 20px 50px;
+    }
+    
+    .create-section {
+        width: 70%;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    header div {
+        margin-top: 15px;
+        width: 100%;
+    }
+    
+    .search {
+        width: 70%;
+    }
+    
+    .btn-section {
+        flex-direction: column;
+        padding: 10px 20px;
+    }
+    
+    .btn-section div {
+        margin: 10px 0;
+    }
+    
+    .note {
+        width: 80%;
+    }
+    
+    #note-detail, #comments {
+        width: 90%;
+    }
+    
+    .btn-detail a {
+        padding: 15px 50px;
+    }
+    
+    .create-section {
+        width: 90%;
+    }
+    
+    .form label {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .note {
+        width: 90%;
+    }
+    
+    .btn-detail {
+        flex-direction: column;
+    }
+    
+    .btn-detail a {
+        margin: 5px 0;
+        width: 100%;
+        text-align: center;
+    }
+    
+    #note-detail, #comments {
+        width: 95%;
+    }
+    
+    .note-detail, .comments {
+        padding: 15px;
+    }
+    
+    .create-section {
+        width: 95%;
+    }
+    
+    .form label {
+        padding: 20px 10px;
+    }
+    
+    select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    header div {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .search {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
