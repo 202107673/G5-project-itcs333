@@ -119,11 +119,16 @@ select {
 .note-detail {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     padding: 30px;
 }
 
+.note-detail section {
+    display: flex;
+    justify-content: center;
+}
+
 #note-detail {
-    background: blakc;
     width: 80%;
     padding: 25px;
     border-radius: 10px;
@@ -145,13 +150,29 @@ select {
 }
 
 .btn-detail {
-    text-align: center;
+    padding: 10px;
 }
 
 .btn-detail button {
     padding: 15px 150px;
 }
 
+#comments {
+    width: 80%;
+}
+
+.comments h4 {
+    margin-bottom: 30px;
+}
+
+#comment {
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 15px;
+}
+
 .comments {
-    padding: 20px;
+    padding: 50px;
+    flex-direction: column;
 }
