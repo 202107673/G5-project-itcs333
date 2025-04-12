@@ -1,38 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Study Group</title>
-    <link rel="stylesheet" href="stylee.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Groups</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>Study Groups</h1>
+    </header>
+
     <main>
-        <h1>Create a New Study Group</h1>
-        <form>
-            <label for="group-name" class="required">Group Name</label>
-            <input type="text" id="group-name" name="group-name" required placeholder="e.g., Calculus Study Buddies">
-
-            <label for="subject" class="required">Subject</label>
-            <input type="text" id="subject" name="subject" required placeholder="e.g., Calculus I">
-
-            <label for="description">Description</label>
-            <textarea id="description" name="description" rows="4" placeholder="Brief description of your study group..."></textarea>
-
-            <label for="location" class="required">Location</label>
-            <input type="text" id="location" name="location" required placeholder="e.g., Library Room 204">
-
-            <label for="meeting-time" class="required">Meeting Time</label>
-            <input type="datetime-local" id="meeting-time" name="meeting-time" required>
-
-            <label for="contact" class="required">Contact Email</label>
-            <input type="email" id="contact" name="contact" required placeholder="e.g., example@university.edu">
-
-            <div class="button-group">
-                <button type="submit">Create Group</button>
-                <a href="study-groups.html" role="button" class="secondary">Cancel</a>
+        <!-- Search & Filters -->
+        <div class="controls">
+            <input type="text" placeholder="Search groups..." class="search-bar">
+            
+            <div class="filter-group">
+                <select>
+                    <option>Filter by Subject</option>
+                    <option>Math</option>
+                    <option>Science</option>
+                </select>
+                
+                <select>
+                    <option>Sort by Date</option>
+                    <option>Newest First</option>
+                </select>
             </div>
-        </form>
+        </div>
+
+        <!-- Group Listing Grid -->
+        <div class="grid-container">
+            <!-- Group Card 1 -->
+            <div class="group-card">
+                <h3>Calculus Study Group</h3>
+                <p class="subject">Mathematics</p>
+                <p>Weekly meetings for Calculus I students</p>
+                <div class="card-footer">
+                    <span class="location">Library Room 204</span>
+                    <a href="group-details.html" class="view-details">View Details</a>
+                </div>
+            </div>
+
+            <!-- Add more group cards here -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button disabled>Previous</button>
+            <span>Page 1 of 3</span>
+            <button>Next</button>
+        </div>
+
+        <!-- Add New Button -->
+        <div class="add-new">
+            <a href="create-group.html" class="button">Create New Group</a>
+        </div>
     </main>
+
+    <footer>
+        <p>© 2024 Study Groups</p>
+    </footer>
 </body>
-</html>
+</html
