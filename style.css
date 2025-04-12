@@ -104,6 +104,11 @@ button {
     border-radius: 5px;
 }
 
+
+p {
+    color: gray;
+}
+
 select {
     padding: 7px;
     border: none;
@@ -129,12 +134,24 @@ select {
     margin-bottom: 20px;
 }
 
-#head {
+#head, #head p {
     border-radius: 5px;
     background-color: #007BFF;
     color: white;
 }
 
 .note-detail div {
+    padding: 20px;
+}
+
+.btn-detail {
+    text-align: center;
+}
+
+.btn-detail button {
+    padding: 15px 150px;
+}
+
+.comments {
     padding: 20px;
 }
