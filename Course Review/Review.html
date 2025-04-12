@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Course Reviews</title>
+  <link rel="stylesheet" href="Review.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="site-title">Campus Hub - Course Reviews</h1>
+      <nav>
+          <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="review-detail.html">Reviews</a></li>
+              <li><a href="add-review.html">Write a Review</a></li>
+              
+          </ul>
+      </nav>
+  </div>
+  </header>
+
+
+  <main class="container">
+    <section id="reviews-listing">
+      <div class="search-section">
+          <div class="search-bar">
+              <input type="text" placeholder="Search courses...">
+              <button class="btn">Search</button>
+          </div>
+          <div class="filter-options">
+              <select>
+                  <option value="">Department</option>
+                  <option value="cs">Computer Science</option>
+                  <option value="bio">Biology</option>
+                  <option value="eng">English</option>
+                  <option value="math">Mathematics</option>
+              </select>
+              <select>
+                  <option value="">Course Level</option>
+                  <option value="Easy">Easy Level</option>
+                  <option value="Moderate">Moderate Level</option>
+                  <option value="Hard">Hard Level</option>
+                  
+              </select>
+              <select>
+                  <option value="">Rating</option>
+                  <option value="5">5 Stars</option>
+                  <option value="4">4+ Stars</option>
+                  <option value="3">3+ Stars</option>
+                  <option value="2">2+ Stars</option>
+                  <option value="1">1+ Star</option>
+              </select>
+              <select>
+                  <option value="">Sort By</option>
+                  <option value="recent">Most Recent</option>
+                  <option value="rating-high">Highest Rating</option>
+                  <option value="rating-low">Lowest Rating</option>
+              </select>
+          </div>
+      </div>
+      
+      <div class="reviews-header">
+        <h2>Course Reviews</h2>
+        <a href="add-review.html" class="btn">Write a Review</a>
+      </div>
+
+    <div class="reviews-grid">
+      <!-- Review Card 1 -->
+      <div class="review-card">
+          <div class="review-header">
+            <h3 class="course-title">ITCS101: Introduction to Programming</h3>
+            <p><strong>Difficulty:</strong> Easy</p>
+            <p>Great for beginners, helpful professor.</p>
+        <a href="review-detail.html" class="btn">View Details</a>
+      </div>
+      </div>
+
+      <!-- Here to put card 2  -->
+      
+    </div>
+    </section>
+    
+  <div style="text-align: center; margin-top: 2rem;">
+  <button>Previous</button>
+  <button>Next</button>
+  </div> 
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Campus Hub</p>
+  </footer>
+</body>
+</html>

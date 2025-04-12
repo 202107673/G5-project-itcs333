@@ -1,0 +1,75 @@
+/* Base Styles */
+.required {
+    color: #d63333;
+}
+
+/* Main Listing Page */
+.controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    margin: 2rem 0;
+}
+
+.event-card {
+    padding: 1rem;
+    border: 1px solid var(--muted-border-color);
+    border-radius: 0.25rem;
+}
+
+.pagination {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+/* Detail View */
+.meta {
+    display: flex;
+    gap: 1.5rem;
+    margin: 1rem 0;
+    color: var(--muted-color);
+}
+
+.comments {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--muted-border-color);
+}
+
+.comment {
+    padding: 1rem;
+    background: var(--code-background-color);
+    border-radius: 0.25rem;
+    margin: 1rem 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Form Styles */
+.buttons {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+  
+  
+  
