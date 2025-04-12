@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Hub - Events Calendar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Campus Hub - Events Calendar</h1>
+        <nav>
+            <a href="#main-content">Skip to Content</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Controls Section -->
+        <section class="controls">
+            <input type="search" placeholder="Search events..." aria-label="Search events">
+            <select aria-label="Filter events">
+                <option>All Events</option>
+                <option>Upcoming</option>
+                <option>Past</option>
+            </select>
+            <select aria-label="Sort events">
+                <option>Date (Newest)</option>
+                <option>Date (Oldest)</option>
+                <option>Event Name</option>
+            </select>
+            <a href="create.html" class="button">Add New Event</a>
+        </section>
+
+        <!-- Events Grid -->
+        <section class="grid">
+            <!-- Event Card 1 -->
+            <article class="event-card">
+                <h2>Career Fair 2025</h2>
+                <div class="meta">
+                    <span>📅 March 15, 2025</span>
+                    <span>📍 Main Quad</span>
+                </div>
+                <p>Annual university career fair with 100+ companies...</p>
+                <a href="detail.html" class="button">View Details</a>
+            </article>
+
+            <!-- Additional event cards would follow same structure -->
+        </section>
+
+        <!-- Pagination -->
+        <nav class="pagination">
+            <a href="#" aria-label="Previous page">&laquo;</a>
+            <a href="#" aria-current="page">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#" aria-label="Next page">&raquo;</a>
+        </nav>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Campus Hub. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+<!-- Abdulrahman khalid 202107673 phase 1 events-calendar -->
