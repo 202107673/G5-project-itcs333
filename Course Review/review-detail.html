@@ -8,28 +8,58 @@
 </head>
 <body>
   <header>
-    <h1>Review Details</h1>
+    <div class="container">
+      <h1 class="site-title">Campus Hub - Review  details</h1>
+      <nav>
+          <ul>
+              <li><a href="Review.html">Home</a></li>
+              
+          </ul>
+      </nav>
+  </div>
   </header>
 
   <main class="container">
-    <article class="card">
-      <h2>ITCS101 - Introduction to Programming</h2>
-      <p><strong>Instructor:</strong> Dr. Smith</p>
-      <p><strong>Rating:</strong> 4/5</p>
-      <p><strong>Difficulty:</strong> Easy</p>
+    <section id="review-detail">
+      <div class="review-detail">
+          <div class="review-detail-header">
+            <h2 class="review-detail-title">ITCS101: Introduction to Programming</h2>
+            <div class="review-detail-metadata">
+              <p><strong>Professor:</strong> Dr. Abdullah Subah</p>
+              <p><strong>Department:</strong> Computer Science</p>
+          </div>
+          </div>
 
       <p>This course was a great introduction to programming. The assignments were challenging but fair.</p>
-
+      <div style="margin-top: 20px;">
+        <p><strong>Workload:</strong> Moderate</p>
+        <p><strong>Difficulty:</strong> Easy</p>
+      </div>
+      
       <button>Edit</button>
-      <button>Delete</button>
+      <button class="button btn-danger">Delete</button>
 
-      <section>
-        <h3>Comments</h3>
-        <p><em>Ahmed:</em> Totally agree!</p>
-        <p><em>Ali :</em> I had a different instructor, but still found it useful.</p>
-      </section>
+      <div class="comments-section">
+        <h3 class="comments-title">Comments (2)</h3>
+        <div class="comment">
+          <div class="comment-author">Ahmed</div>
+          <div class="comment-date">April 10, 2025</div>
+          <p>Dr. Abdullah Subah is the best doctor in whole university</p>
+      </div>
+      
+      <div class="comment">
+          <div class="comment-author">Ali</div>
+          <div class="comment-date">December 20, 2024</div>
+          <p>Does he curve the grades? I'm a bit worried about the exams.</p>
+      </div>
 
-      <a href="index.html"><button>Back to Listing</button></a>
+      <div class="comment-form">
+        <h4>Add a Comment</h4>
+        <textarea placeholder="Write your comment here..."></textarea>
+        <button class="btn">Post Comment</button>
+    </div>
+
+      <a href="Review.html"><button class="btn">Back to Listing</button></a>
     </article>
   </main>
 
