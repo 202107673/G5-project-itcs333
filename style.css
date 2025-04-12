@@ -128,3 +128,13 @@ select {
 .note-detail h3, .note-detail p {
     margin-bottom: 20px;
 }
+
+#head {
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+}
+
+.note-detail div {
+    padding: 20px;
+}
