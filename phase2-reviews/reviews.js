@@ -118,3 +118,45 @@ const state = {
     }
     return stars;
   }
+
+  // Render pagination controls
+  function renderPagination(totalItems) {
+    const paginationDiv = document.querySelector('div[style="text-align: center; margin-top: 2rem;"]');
+    
+    if (!paginationDiv) return;
+    
+    const totalPages = Math.ceil(totalItems / state.reviewsPerPage);
+    
+    // Clear existing buttons
+    paginationDiv.innerHTML = '';
+    
+    // Previous button
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Previous';
+    prevButton.disabled = state.currentPage === 1;
+    prevButton.addEventListener('click', () => {
+      if (state.currentPage > 1) {
+        state.currentPage--;
+        renderReviewCards(state.filteredReviews);
+      }
+    });
+    paginationDiv.appendChild(prevButton);
+    
+    // Page number display
+    const pageInfo = document.createElement('span');
+    pageInfo.textContent = ` Page ${state.currentPage} of ${totalPages} `;
+    pageInfo.style.margin = '0 10px';
+    paginationDiv.appendChild(pageInfo);
+    
+    // Next button
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.disabled = state.currentPage === totalPages || totalPages === 0;
+    nextButton.addEventListener('click', () => {
+      if (state.currentPage < totalPages) {
+        state.currentPage++;
+        renderReviewCards(state.filteredReviews);
+      }
+    });
+    paginationDiv.appendChild(nextButton);
+  }
