@@ -287,3 +287,26 @@ const state = {
     state.filteredReviews = filtered;
     renderReviewCards(filtered);
   }
+
+  // Simple functions to show/hide loading indicator
+  function showLoading() {
+    const loadingEl = document.createElement('div');
+    loadingEl.id = 'loading';
+    loadingEl.textContent = 'Loading...';
+    document.body.appendChild(loadingEl);
+  }
+  
+  function hideLoading() {
+    const loadingEl = document.getElementById('loading');
+    if (loadingEl) loadingEl.remove();
+  }
+  
+  // Show error message
+  function showError(message) {
+    const errorEl = document.createElement('div');
+    errorEl.className = 'error';
+    errorEl.textContent = message;
+    document.body.appendChild(errorEl);
+    
+    setTimeout(() => errorEl.remove(), 3000);
+  }
