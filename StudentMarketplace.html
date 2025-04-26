@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Marketplace</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="marketplace.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -27,8 +28,13 @@
         <option>Filter by Category</option>
       </select>
       <select class="p-2 border rounded w-full sm:w-1/4">
-        <option>Sort by</option>
-      </select>
+  <option disabled selected>Sort by</option>
+  <option>Name A-Z</option>
+  <option>Name Z-A</option>
+  <option>Price Low-High</option>
+  <option>Price High-Low</option>
+</select>
+
     </div>
 
     <a href="#create" class="inline-block mb-4 px-4 py-2 bg-green-500 text-white rounded">Add New Item</a>
