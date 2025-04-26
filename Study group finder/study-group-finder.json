@@ -1,0 +1,22 @@
+{
+    "groups": [
+      {
+        "id": 1,
+        "name": "Calculus Study Buddies",
+        "subject": "Calculus I",
+        "description": "We help each other understand calculus concepts and practice problems.",
+        "location": "Library Room 204",
+        "meetingTime": "2025-04-30T17:00",
+        "contact": "calcgroup@university.edu"
+      },
+      {
+        "id": 2,
+        "name": "Physics Problem Solvers",
+        "subject": "Physics II",
+        "description": "Weekly meetups to work on assignments together.",
+        "location": "Science Building 101",
+        "meetingTime": "2025-05-02T15:00",
+        "contact": "physicsgroup@university.edu"
+      }
+    ]
+  }
