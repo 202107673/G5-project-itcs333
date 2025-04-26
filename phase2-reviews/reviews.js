@@ -88,7 +88,7 @@ const state = {
     }
     
     // Calculate pagination
-    const startIndex = (state.currentPage - 1) * state.reviewsPerPage;
+    const startIndex = (state.currentPage - 1) * state.reviewsPerPage; // to control the cards with the pages
     const endIndex = startIndex + state.reviewsPerPage;
     const paginatedReviews = reviews.slice(startIndex, endIndex);
     
@@ -110,7 +110,6 @@ const state = {
     
     renderPagination(reviews.length);
   }
-
   // Render star rating
   function renderStars(rating) {
     let stars = '';
