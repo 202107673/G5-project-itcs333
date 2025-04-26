@@ -519,3 +519,21 @@ const state = {
       });
     }
   }
+
+   // Initialize the appropriate page based on the current URL
+   function initializeApp() {
+    const currentPath = window.location.pathname;
+    
+    if (currentPath.includes('review-detail.html')) {
+      initDetailPage();
+      initCommentForm();
+    } else if (currentPath.includes('add-review.html')) {
+      initAddReviewPage();
+    } else {
+      initMainPage();
+    }
+  }
+
+  
+  // Run the initialization when the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', initializeApp);
