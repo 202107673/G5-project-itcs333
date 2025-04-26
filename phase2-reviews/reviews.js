@@ -22,7 +22,7 @@ const state = {
       showLoading();
       
       // Fetch our courses.json file
-      const response = await fetch('courses.json');
+      const response = await fetch('/phase2-reviews/courses.json');
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -55,7 +55,7 @@ const state = {
       }
       
       // Otherwise, fetch from JSON file
-      const response = await fetch('courses.json');
+      const response = await fetch('/phase2-reviews/courses.json');
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
