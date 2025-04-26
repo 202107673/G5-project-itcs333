@@ -384,4 +384,64 @@ const state = {
       if (errorEl && errorEl.className === 'error-text') errorEl.remove();
     });
   }
+
+  // Initialize the main page
+  function initMainPage() {
+    fetchReviews().then(reviews => {
+      renderReviewCards(reviews);
+      
+      // Set up search functionality
+      const searchInput = document.querySelector('.search-bar input');
+      const searchButton = document.querySelector('.search-bar .btn');
+      
+      if (searchInput && searchButton) {
+        searchButton.addEventListener('click', () => {
+          state.filters.search = searchInput.value;
+          applyFiltersAndSort();
+        });
+        
+        // Add enter key search functionality
+        searchInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            state.filters.search = searchInput.value;
+            applyFiltersAndSort();
+          }
+        });
+      }
+      
+      // Set up filter functionality
+      const departmentSelect = document.querySelector('.filter-options select:nth-child(1)');
+      const levelSelect = document.querySelector('.filter-options select:nth-child(2)');
+      const ratingSelect = document.querySelector('.filter-options select:nth-child(3)');
+      const sortSelect = document.querySelector('.filter-options select:nth-child(4)');
+      
+      if (departmentSelect) {
+        departmentSelect.addEventListener('change', () => {
+          state.filters.department = departmentSelect.value;
+          applyFiltersAndSort();
+        });
+      }
+      
+      if (levelSelect) {
+        levelSelect.addEventListener('change', () => {
+          state.filters.level = levelSelect.value;
+          applyFiltersAndSort();
+        });
+      }
+      
+      if (ratingSelect) {
+        ratingSelect.addEventListener('change', () => {
+          state.filters.rating = ratingSelect.value;
+          applyFiltersAndSort();
+        });
+      }
+      
+      if (sortSelect) {
+        sortSelect.addEventListener('change', () => {
+          state.sortOption = sortSelect.value;
+          applyFiltersAndSort();
+        });
+      }
+    });
+  }
   
