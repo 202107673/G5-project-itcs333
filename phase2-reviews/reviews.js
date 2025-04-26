@@ -191,3 +191,35 @@ const state = {
     // Render course-specific comments
     renderComments(review.comments);
   }
+
+  // Render comments for a specific course
+  function renderComments(comments) {
+    const commentsSection = document.querySelector('.comments-section');
+    if (!commentsSection) return;
+    
+    // Update comments title
+    const commentsTitle = commentsSection.querySelector('.comments-title');
+    if (commentsTitle) {
+      commentsTitle.textContent = `Comments (${comments.length})`;
+    }
+    
+    // Clear existing comments
+    const existingComments = commentsSection.querySelectorAll('.comment');
+    existingComments.forEach(comment => comment.remove());
+    
+    // Add new comments
+    const commentForm = commentsSection.querySelector('.comment-form');
+    
+    comments.forEach(comment => {
+      const commentElement = document.createElement('div');
+      commentElement.className = 'comment';
+      commentElement.innerHTML = `
+        <div class="comment-author">${comment.author}</div>
+        <div class="comment-date">${comment.date}</div>
+        <p>${comment.text}</p>
+      `;
+      
+      // Insert before the comment form
+      commentsSection.insertBefore(commentElement, commentForm);
+    });
+  }
