@@ -73,3 +73,40 @@ const state = {
       return null;
     }
   }
+
+  // Render the review cards on the main page
+  function renderReviewCards(reviews) {
+    const reviewsGrid = document.querySelector('.reviews-grid');
+    
+    if (!reviewsGrid) return;
+    
+    reviewsGrid.innerHTML = '';
+    
+    if (reviews.length === 0) {
+      reviewsGrid.innerHTML = '<p>No reviews found matching your criteria.</p>';
+      return;
+    }
+    
+    // Calculate pagination
+    const startIndex = (state.currentPage - 1) * state.reviewsPerPage;
+    const endIndex = startIndex + state.reviewsPerPage;
+    const paginatedReviews = reviews.slice(startIndex, endIndex);
+    
+    paginatedReviews.forEach(review => {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      card.innerHTML = `
+        <div class="review-header">
+          <h3 class="course-title">${review.courseCode}: ${review.courseTitle}</h3>
+          <p><strong>Instructor:</strong> ${review.instructor}</p>
+          <p><strong>Rating:</strong> ${renderStars(review.rating)}</p>
+          <p><strong>Difficulty:</strong> ${review.difficulty}</p>
+          <p>${review.content}</p>
+          <a href="review-detail.html?id=${review.id}" class="btn">View Details</a>
+        </div>
+      `;
+      reviewsGrid.appendChild(card);
+    });
+    
+    renderPagination(reviews.length);
+  }
