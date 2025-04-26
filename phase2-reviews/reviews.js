@@ -223,3 +223,67 @@ const state = {
       commentsSection.insertBefore(commentElement, commentForm);
     });
   }
+
+  // Apply filters and sort the reviews
+  function applyFiltersAndSort() {
+    state.currentPage = 1;
+    
+    let filtered = [...state.reviews];
+    
+    // Apply search filter
+    if (state.filters.search) {
+      const searchTerm = state.filters.search.toLowerCase();
+      filtered = filtered.filter(review => 
+        review.courseCode.toLowerCase().includes(searchTerm) ||
+        review.courseTitle.toLowerCase().includes(searchTerm) ||
+        review.instructor.toLowerCase().includes(searchTerm)
+      );
+    }
+    
+    // Apply department filter
+    if (state.filters.department) {
+      const departmentMap = {
+        'cs': 'Computer Science',
+        'bio': 'Biology',
+        'eng': 'English',
+        'math': 'Mathematics',
+        'phys': 'Physics'
+      };
+      
+      filtered = filtered.filter(review => 
+        review.department === departmentMap[state.filters.department]
+      );
+    }
+    
+    // Apply level filter
+    if (state.filters.level) {
+      filtered = filtered.filter(review => 
+        review.difficulty === state.filters.level
+      );
+    }
+    
+    // Apply rating filter
+    if (state.filters.rating) {
+      const minRating = parseInt(state.filters.rating);
+      filtered = filtered.filter(review => 
+        review.rating >= minRating
+      );
+    }
+    
+    // Apply sorting
+    switch (state.sortOption) {
+      case 'recent':
+        // Sort by ID (higher ID is more recent in our data)
+        filtered.sort((a, b) => b.id - a.id);
+        break;
+      case 'rating-high':
+        filtered.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'rating-low':
+        filtered.sort((a, b) => a.rating - b.rating);
+        break;
+    }
+    
+    state.filteredReviews = filtered;
+    renderReviewCards(filtered);
+  }
