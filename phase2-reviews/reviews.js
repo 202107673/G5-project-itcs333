@@ -474,3 +474,48 @@ const state = {
       });
     }
   }
+
+  // Add comment functionality
+  function initCommentForm() {
+    const commentForm = document.querySelector('.comment-form');
+    if (!commentForm) return;
+    
+    const commentButton = commentForm.querySelector('.btn');
+    const commentTextarea = commentForm.querySelector('textarea');
+    
+    if (commentButton && commentTextarea) {
+      commentButton.addEventListener('click', () => {
+        const commentText = commentTextarea.value.trim();
+        
+        if (commentText) {
+          // In a real app, we would save this to a database
+          // For demo purposes, we'll just add it to the UI
+          const commentSection = document.querySelector('.comments-section');
+          const newComment = document.createElement('div');
+          newComment.className = 'comment';
+          
+          const today = new Date();
+          const formattedDate = `${today.toLocaleString('default', { month: 'long' })} ${today.getDate()}, ${today.getFullYear()}`;
+          
+          newComment.innerHTML = `
+            <div class="comment-author">You</div>
+            <div class="comment-date">${formattedDate}</div>
+            <p>${commentText}</p>
+          `;
+          
+          // Insert before the comment form
+          commentSection.insertBefore(newComment, commentForm);
+          
+          // Update comment count
+          const commentsTitle = commentSection.querySelector('.comments-title');
+          if (commentsTitle) {
+            const currentCount = parseInt(commentsTitle.textContent.match(/\d+/)[0]) || 0;
+            commentsTitle.textContent = `Comments (${currentCount + 1})`;
+          }
+          
+          // Clear the textarea
+          commentTextarea.value = '';
+        }
+      });
+    }
+  }
