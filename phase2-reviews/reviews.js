@@ -445,3 +445,32 @@ const state = {
     });
   }
   
+  // Initialize the detail page
+  function initDetailPage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const reviewId = urlParams.get('id');
+    
+    if (reviewId) {
+      fetchReviewById(reviewId).then(review => {
+        if (review) {
+          renderReviewDetail(review);
+        }
+      });
+    }
+  }
+  
+  // Initialize the add review page
+  function initAddReviewPage() {
+    const form = document.querySelector('form');
+    
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (validateAddReviewForm(form)) {
+          alert('Review submitted successfully!');
+          form.reset();
+        }
+      });
+    }
+  }
