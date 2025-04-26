@@ -310,3 +310,78 @@ const state = {
     
     setTimeout(() => errorEl.remove(), 3000);
   }
+
+  // Validate the add review form
+  function validateAddReviewForm(form) {
+    const courseInput = form.querySelector('#course');
+    const instructorInput = form.querySelector('#instructor');
+    const ratingInput = form.querySelector('#rating');
+    const reviewInput = form.querySelector('#review');
+    const difficultyInput = form.querySelector('#difficulty');
+    const departmentInput = form.querySelector('#department');
+    let isValid = true;
+    
+    // Reset previous error messages
+    form.querySelectorAll('.error-text').forEach(el => el.remove());
+    
+    // Validate course code
+    if (!courseInput.value.trim()) {
+      showInputError(courseInput, 'Course code is required');
+      isValid = false;
+    }
+    
+    // Validate instructor name
+    if (!instructorInput.value.trim()) {
+      showInputError(instructorInput, 'Instructor name is required');
+      isValid = false;
+    }
+    
+    // Validate rating
+    if (!ratingInput.value.trim()) {
+      showInputError(ratingInput, 'Rating is required');
+      isValid = false;
+    } else {
+      const rating = parseInt(ratingInput.value);
+      if (isNaN(rating) || rating < 1 || rating > 5) {
+        showInputError(ratingInput, 'Rating must be between 1 and 5');
+        isValid = false;
+      }
+    }
+    
+    // Validate review text
+    if (!reviewInput.value.trim()) {
+      showInputError(reviewInput, 'Review is required');
+      isValid = false;
+    }
+    
+    // Validate difficulty selection
+    if (!difficultyInput.value) {
+      showInputError(difficultyInput, 'Please select a difficulty level');
+      isValid = false;
+    }
+
+    if (!departmentInput.value) {
+        showInputError(departmentInput, 'Please select a department');
+        isValid = false;
+    }
+    return isValid;
+  }
+  
+  // Show validation error message
+  function showInputError(input, message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-text';
+    errorElement.textContent = message;
+    errorElement.style.color = 'red';
+    errorElement.style.fontSize = '0.8rem';
+    
+    input.parentNode.insertBefore(errorElement, input.nextSibling);
+    input.style.borderColor = 'red';
+    
+    input.addEventListener('input', function() {
+      this.style.borderColor = '';
+      const errorEl = this.nextElementSibling;
+      if (errorEl && errorEl.className === 'error-text') errorEl.remove();
+    });
+  }
+  
