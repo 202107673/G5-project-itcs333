@@ -160,3 +160,34 @@ const state = {
     });
     paginationDiv.appendChild(nextButton);
   }
+
+  // Render a detailed review
+  function renderReviewDetail(review) {
+    if (!review) return;
+    
+    const title = document.querySelector('.review-detail-title');
+    if (title) title.textContent = `${review.courseCode}: ${review.courseTitle}`;
+    
+    const metadata = document.querySelector('.review-detail-metadata');
+    if (metadata) {
+      metadata.innerHTML = `
+        <p><strong>Professor:</strong> ${review.instructor}</p>
+        <p><strong>Department:</strong> ${review.department}</p>
+        <p><strong>Rating:</strong> ${renderStars(review.rating)}</p>
+      `;
+    }
+    
+    const contentParagraph = document.querySelector('.review-detail > p');
+    if (contentParagraph) contentParagraph.textContent = review.fullContent;
+    
+    const infoDiv = document.querySelector('div[style="margin-top: 20px;"]');
+    if (infoDiv) {
+      infoDiv.innerHTML = `
+        <p><strong>Workload:</strong> ${review.difficulty === 'Easy' ? 'Light' : review.difficulty === 'Moderate' ? 'Moderate' : 'Heavy'}</p>
+        <p><strong>Difficulty:</strong> ${review.difficulty}</p>
+      `;
+    }
+
+    // Render course-specific comments
+    renderComments(review.comments);
+  }
