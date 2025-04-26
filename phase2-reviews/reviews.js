@@ -110,3 +110,12 @@ const state = {
     
     renderPagination(reviews.length);
   }
+
+  // Render star rating
+  function renderStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+      stars += i <= rating ? '★' : '☆';
+    }
+    return stars;
+  }
