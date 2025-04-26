@@ -9,40 +9,48 @@
 <body>
   <header>
     <div class="container">
-      <h1 class="site-title">Campus Hub - Add Course Reviews</h1>
+      <h1 class="site-title">Campus Hub - Add Course Review</h1>
       <nav>
           <ul>
               <li><a href="Review.html">Home</a></li>
               <li><a href="review-detail.html">Reviews</a></li>
-              
           </ul>
       </nav>
   </div>
   </header>
 
   <main class="form-container">
-    <h2>Write a course Review</h2>
+    <h2>Write a Course Review</h2>
     <form>
       <label for="course">Course Code</label>
-      <input type="text" id="course" name="course" required placeholder="e.g. CS101"/>
+      <input type="text" id="course" name="course" placeholder="e.g. ITCS101"/>
 
       <label for="instructor">Instructor Name</label>
-      <input type="text" id="instructor" name="instructor" required />
+      <input type="text" id="instructor" name="instructor" />
 
       <label for="rating">Rating (1-5)</label>
-      <input type="number" id="rating" name="rating" min="1" max="5" required />
+      <input type="number" id="rating" name="rating" min="1" max="5" />
 
       <label for="review">Your Review</label>
-      <textarea id="review" name="review" rows="5" required></textarea>
+      <textarea id="review" name="review" rows="5" ></textarea>
 
       <label for="difficulty">Difficulty</label>
-      <select id="difficulty" name="difficulty" required>
-      <option value="">Select difficulty</option>
-      <option value="Easy">Easy</option>
-      <option value="Moderate">Moderate</option>
-      <option value="Hard">Hard</option>
-    </select>
+      <select id="difficulty" name="difficulty">
+        <option value="">Select difficulty</option>
+        <option value="Easy">Easy</option>
+        <option value="Moderate">Moderate</option>
+        <option value="Hard">Hard</option>
+      </select>
 
+      <label for="department">Department</label>
+      <select id="department" name="department" >
+        <option value="">Select department</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Biology">Biology</option>
+        <option value="English">English</option>
+        <option value="Mathematics">Mathematics</option>
+        <option value="Physics">Physics</option>
+      </select>
 
       <button type="submit">Submit Review</button>
       <a href="Review.html"><button type="button">Cancel</button></a>
@@ -52,5 +60,6 @@
   <footer>
     <p>&copy; 2025 Campus Hub</p>
   </footer>
+  <script src="../phase2-reviews/reviews.js"></script>
 </body>
 </html>

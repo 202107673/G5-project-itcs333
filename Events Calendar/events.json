@@ -1,0 +1,29 @@
+[
+    {
+      "id": 1,
+      "title": "Career Fair 2025",
+      "date": "2025-03-15",
+      "location": "Main Quad",
+      "time": "10:00 AM - 4:00 PM",
+      "organizer": "Career Services Office",
+      "description": "Connect with top employers from various industries."
+    },
+    {
+      "id": 2,
+      "title": "Tech Conference",
+      "date": "2025-04-10",
+      "location": "Auditorium",
+      "time": "9:00 AM - 5:00 PM",
+      "organizer": "Tech Club",
+      "description": "A full-day event exploring new technologies."
+    },
+    {
+      "id": 3,
+      "title": "Art Exhibition",
+      "date": "2025-05-05",
+      "location": "Art Gallery",
+      "time": "1:00 PM - 6:00 PM",
+      "organizer": "Fine Arts Department",
+      "description": "A showcase of student artworks."
+    }
+  ]

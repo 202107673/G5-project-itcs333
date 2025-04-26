@@ -12,15 +12,12 @@
       <h1 class="site-title">Campus Hub - Course Reviews</h1>
       <nav>
           <ul>
-              <li><a href="../mainPage.html">Home</a></li>
-              <li><a href="review-detail.html">Reviews</a></li>
+              <li><a href="../mainPage.html">Home</a></li>             
               <li><a href="add-review.html">Write a Review</a></li>
-              
           </ul>
       </nav>
-  </div>
+    </div>
   </header>
-
 
   <main class="container">
     <section id="reviews-listing">
@@ -36,13 +33,13 @@
                   <option value="bio">Biology</option>
                   <option value="eng">English</option>
                   <option value="math">Mathematics</option>
+                  <option value="phys">Physics</option>
               </select>
               <select>
                   <option value="">Course Level</option>
                   <option value="Easy">Easy Level</option>
                   <option value="Moderate">Moderate Level</option>
                   <option value="Hard">Hard Level</option>
-                  
               </select>
               <select>
                   <option value="">Rating</option>
@@ -66,30 +63,19 @@
         <a href="add-review.html" class="btn">Write a Review</a>
       </div>
 
-    <div class="reviews-grid">
-      <!-- Review Card 1 -->
-      <div class="review-card">
-          <div class="review-header">
-            <h3 class="course-title">ITCS101: Introduction to Programming</h3>
-            <p><strong>Difficulty:</strong> Easy</p>
-            <p>Great for beginners, helpful professor.</p>
-        <a href="review-detail.html" class="btn">View Details</a>
+      <div class="reviews-grid">
+        <!-- Course review cards will be dynamically populated here -->
       </div>
-      </div>
-
-      <!-- Here to put card 2  -->
-      
-    </div>
     </section>
     
-  <div style="text-align: center; margin-top: 2rem;">
-  <button>Previous</button>
-  <button>Next</button>
-  </div> 
+    <div style="text-align: center; margin-top: 2rem;">
+      <!-- Pagination controls will be dynamically added here -->
+    </div> 
   </main>
 
   <footer>
     <p>&copy; 2025 Campus Hub</p>
   </footer>
+  <script src="../phase2-reviews/reviews.js"></script>
 </body>
 </html>

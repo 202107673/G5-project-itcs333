@@ -87,6 +87,7 @@ a {
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+    margin-right: 5px;
 }
 
 button {
@@ -417,7 +418,6 @@ a, button, input, select, textarea, .note, #comment {
     
     .btn-detail a {
         margin: 5px 0;
-        width: 100%;
         text-align: center;
     }
     
