@@ -14,27 +14,30 @@ fetch('courses.json')
             `);
             i++;
         }
-        
-        console.log(data);
     })
 
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.querySelector('.search');
-
-    searchInput.focus();
-
-    searchInput.addEventListener('search', function(e) {
-        const searchValue = e.target.value.trim();
-        console.log("Search event triggered:", searchValue);
-        highlightSpan.textContent = searchValue ? `"${searchValue}"` : 'Nothing yet';
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('.search');
+        searchInput.focus();
+    
+        function filterCourses(searchValue) {
+            const notes = document.querySelectorAll('.note');
+            const searchLower = searchValue.toLowerCase();
+            
+            notes.forEach(note => {
+                const courseCode = note.querySelector('h3').textContent.toLowerCase();
+                note.style.display = courseCode.includes(searchLower) ? '' : 'none';
+            });
+        }
+    
+        searchInput.addEventListener('search', function(e) {
+            filterCourses(e.target.value.trim());
+        });
+    
+        searchInput.addEventListener('input', function(e) {
+            filterCourses(e.target.value.trim());
+        });
     });
-
-    searchInput.addEventListener('input', function(e) {
-        const searchValue = e.target.value.trim();
-        console.log("Input changed:", searchValue);
-    });
-
-});
 
 // document.addEventListener('DOMContentLoaded', () => {
 //     const mainSection = document.querySelector('.main-section')
