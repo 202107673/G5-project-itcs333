@@ -1,18 +1,22 @@
 fetch('courses.json')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        displayCourses(data);
+        let i = 0;
+        while(data[i] !== undefined) {
+            const sec = document.getElementsByClassName('main-section')[0];
+
+            sec.insertAdjacentHTML('beforeend', `
+                <div class="note">
+                    <h3>${data[i].courseCode}</h3>
+                    <p>${data[i].description}</p>
+                    <a href="detail.html">Show Details</a>
+                </div>
+            `);
+            i++;
+        }
+        
+        console.log(data);
     })
-    .catch(error => {
-        document.getElementById('course-container').innerHTML = 
-            `<p class="error">Error loading course data: ${error.message}</p>`;
-        console.error('Error:', error);
-    });
 
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.search');
@@ -30,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Input changed:", searchValue);
     });
 
-    console.log(searchValue);
 });
 
 // document.addEventListener('DOMContentLoaded', () => {
