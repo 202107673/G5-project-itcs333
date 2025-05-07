@@ -68,12 +68,14 @@ a {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .btn-section {
+    /* background-color: #0069d9; */
     display: flex;
     justify-content: right;
-    padding: 10px 200px;
+    padding: 15px 200px;
     align-items: center;
 }
 

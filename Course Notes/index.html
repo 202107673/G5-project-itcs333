@@ -14,6 +14,7 @@
             <input type="search" class="search" placeholder="Search For Notes">
             <!-- <button>Filter</button> -->
             <select name="filter" id="filter-dropdown">
+                <option value="" selected disabled hidden>Filter</option>
                 <optgroup label="Time">
                   <option value="last-week">Last Week</option>
                   <option value="last-month">Last Month</option>
@@ -28,11 +29,6 @@
               </select>
         </div>
     </header>
-
-    <div class="loading" style="display:none;text-align:center;padding:20px;">
-        <p>Loading...</p>
-    </div>
-    
 
     <main>
         <section class="btn-section">
