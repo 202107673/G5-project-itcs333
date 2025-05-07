@@ -1,8 +1,36 @@
+fetch('courses.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        displayCourses(data);
+    })
+    .catch(error => {
+        document.getElementById('course-container').innerHTML = 
+            `<p class="error">Error loading course data: ${error.message}</p>`;
+        console.error('Error:', error);
+    });
+
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.search');
 
     searchInput.focus();
 
+    searchInput.addEventListener('search', function(e) {
+        const searchValue = e.target.value.trim();
+        console.log("Search event triggered:", searchValue);
+        highlightSpan.textContent = searchValue ? `"${searchValue}"` : 'Nothing yet';
+    });
+
+    searchInput.addEventListener('input', function(e) {
+        const searchValue = e.target.value.trim();
+        console.log("Input changed:", searchValue);
+    });
+
+    console.log(searchValue);
 });
 
 // document.addEventListener('DOMContentLoaded', () => {
