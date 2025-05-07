@@ -452,3 +452,12 @@ a, button, input, select, textarea, .note, #comment {
         margin-bottom: 10px;
     }
 }
+
+optgroup {
+    font-weight: bold;
+    color: #555;
+}
+
+option {
+    padding-left: 20px;
+}

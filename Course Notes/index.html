@@ -13,12 +13,19 @@
         <div>
             <input type="search" class="search" placeholder="Search For Notes">
             <!-- <button>Filter</button> -->
-            <select name="filter">
-                <option>Filter</option>
-                <option>potion one</option>
-                <option>potion two</option>
-                <option>potion three</option>
-            </select>
+            <select name="filter" id="filter-dropdown">
+                <optgroup label="Time">
+                  <option value="last-week">Last Week</option>
+                  <option value="last-month">Last Month</option>
+                  <option value="last-year">Last Year</option>
+                </optgroup>
+                
+                <optgroup label="Course">
+                  <option value="science">Science</option>
+                  <option value="it">Information System</option>
+                  <option value="business">Business</option>
+                </optgroup>
+              </select>
         </div>
     </header>
 
@@ -50,6 +57,7 @@
 
         <section class="main-section">
             
+
 
         </section>
     </main>
