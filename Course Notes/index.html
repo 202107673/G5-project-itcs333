@@ -33,16 +33,17 @@
 
     <main>
         <section class="btn-section">
-            <div>
-                <a href="">&laquo;</a>
-                <a href="">1</a>
-                <a href="">2</a>
-                <a href="">3</a>
-                <a href="">&raquo;</a>
+            <div class="pagination">
+                <a id="prev-btn" href="">&laquo;</a>
+                <div id="btn-div">
+                    
+                </div>
+                <a id="next-btn" href="">&raquo;</a>
             </div>
             <div>
                 <!-- <button title="sort">Sort</button> -->
                 <select name="sort">
+                    <option value="" selected disabled hidden>Sort By</option>
                     <option>Sort by Name (a-z)</option>
                     <option>Sort by Name (z-a)</option>
                     <option>Sort by Newest</option>

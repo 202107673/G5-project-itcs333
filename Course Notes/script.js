@@ -3,11 +3,67 @@ document.addEventListener('DOMContentLoaded', function () {
     const filter = document.getElementById('filter-dropdown');
     const sec = document.getElementsByClassName('main-section')[0];
     const maxNotes = 9;
+    let currentPage = 1;
+    let totalPages = 1;
     let coursesData = [];
 
     if (searchInput) {
         searchInput.focus();
     }
+
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const pageButtonsContainer = document.getElementById('btn-div');
+
+    prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (currentPage > 1) {
+            currentPage--;
+            displayItems();
+        }
+    });
+    
+    nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayItems();
+        }
+    });
+    
+
+    function createPageButtons() {
+        pageButtonsContainer.innerHTML = '';
+    
+        for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('a');
+            pageBtn.textContent = i;
+            pageBtn.classList.add('page-btn');
+            if (i === currentPage) {
+                pageBtn.classList.add('active');
+            }
+            pageBtn.addEventListener('click', () => {
+                currentPage = i;
+                displayItems();
+                updateActiveButton();
+            });
+            pageButtonsContainer.appendChild(pageBtn);
+        }
+    }
+
+    function displayItems() {
+        renderNotes(coursesData);
+        createPageButtons();
+    }
+    
+    function updateActiveButton() {
+        const buttons = pageButtonsContainer.querySelectorAll('.page-btn');
+        buttons.forEach((btn, index) => {
+            btn.classList.toggle('active', index + 1 === currentPage);
+        });
+    }    
+
+    createPageButtons();
 
     const addButton = document.getElementById('add-btn');
     if (addButton) {
@@ -26,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!createdAt || isNaN(Date.parse(createdAt))) errors.push("Valid date is required for 'Created At'.");
 
             if (errors.length > 0) {
+                e.preventDefault();
                 alert("Please fix the following errors:\n\n" + errors.join("\n"));
                 return;
             }
@@ -58,25 +115,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function renderNotes(data) {
+        totalPages = Math.ceil(data.length / maxNotes);
         if (!sec) return;
         sec.innerHTML = '';
-        let displayed = 0;
-
-        for (let i = 0; i < data.length && displayed < maxNotes; i++) {
+    
+        totalPages = Math.ceil(data.length / maxNotes);
+        const startIndex = (currentPage - 1) * maxNotes;
+        const endIndex = startIndex + maxNotes;
+        const pageData = data.slice(startIndex, endIndex);
+    
+        pageData.forEach(item => {
             sec.insertAdjacentHTML('beforeend', `
                 <div class="note">
-                    <h3>${data[i].courseCode}</h3>
-                    <p>${data[i].description}</p>
+                    <h3>${item.courseCode}</h3>
+                    <p>${item.description}</p>
                     <a href="detail.html">Show Details</a>
                 </div>
             `);
-            displayed++;
-        }
-
-        if (searchInput) {
-            searchNote(searchInput.value.trim());
-        }
+        });
+    
+        updateActiveButton();
     }
+    
 
     function searchNote(searchValue) {
         const notes = document.querySelectorAll('.note');
@@ -123,6 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             coursesData = data;
+            displayItems();
             renderNotes(coursesData);
         });
 

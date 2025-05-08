@@ -124,5 +124,12 @@
     "description": "Principles of financial accounting, balance sheets, income statements, and cash flow management.",
     "course": "Business",
     "createdAt": "2025-04-14"
+  },
+  {
+    "courseCode": "MNG261",
+    "title": "Accounting",
+    "description": "Principles of financial accounting, balance sheets, income statements, and cash flow management.",
+    "course": "Business",
+    "createdAt": "2025-04-11"
   }
 ]

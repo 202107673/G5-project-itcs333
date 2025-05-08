@@ -78,9 +78,26 @@ a {
     align-items: center;
 }
 
-.btn-section div {
-    padding: 0px 10px;
+.pagination {
+    display: flex;
+    align-items: center;
 }
+
+.btn-section div {
+    padding: 0px 2px;
+}
+
+.pagination a {
+    cursor: pointer;
+}
+
+.pagination .page-btn.active {
+    background-color: #007BFF;  /* Bootstrap blue */
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
 
 .btn-section a {
     padding: 6px 10px;
@@ -290,16 +307,12 @@ textarea {
     background-color: #0069d9;
 }
 
-.btn-detail a:first-child:hover {
-    background-color: #0069d9;
-}
-
-.btn-detail a:last-child:hover {
+.btn-detail a:hover {
     background-color: #dc3545;
     color: white;
 }
 
-.create-btn a:last-child:hover {
+.create-btn a:hover {
     background-color: #6c757d;
     color: white;
 }
@@ -324,14 +337,11 @@ input[type="text"]:hover, textarea:hover, select:hover {
     transition: all 0.3s ease;
 }
 
-.btn-section div:first-child a:hover {
+.btn-section a:hover {
     background-color: #007BFF;
     color: white;
 }
 
-.btn-section div:first-child a:first-child:hover, .btn-section div:first-child a:last-child:hover {
-    background-color: #6c757d;
-}
 
 .search:hover {
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
