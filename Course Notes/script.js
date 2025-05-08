@@ -11,59 +11,59 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInput.focus();
     }
 
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const pageButtonsContainer = document.getElementById('btn-div');
+    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+    if (isHomePage) {
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageButtonsContainer = document.getElementById('btn-div');
 
-    prevBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (currentPage > 1) {
-            currentPage--;
-            displayItems();
-        }
-    });
-    
-    nextBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayItems();
-        }
-    });
-    
-
-    function createPageButtons() {
-        pageButtonsContainer.innerHTML = '';
-    
-        for (let i = 1; i <= totalPages; i++) {
-            const pageBtn = document.createElement('a');
-            pageBtn.textContent = i;
-            pageBtn.classList.add('page-btn');
-            if (i === currentPage) {
-                pageBtn.classList.add('active');
-            }
-            pageBtn.addEventListener('click', () => {
-                currentPage = i;
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
                 displayItems();
-                updateActiveButton();
+            }
+        });
+        
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayItems();
+            }
+        });    
+        
+    
+        function createPageButtons() {
+            pageButtonsContainer.innerHTML = '';
+        
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('a');
+                pageBtn.textContent = i;
+                pageBtn.classList.add('page-btn');
+                if (i === currentPage) {
+                    pageBtn.classList.add('active');
+                }
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    displayItems();
+                });
+                pageButtonsContainer.appendChild(pageBtn);
+            }
+        }
+
+        function displayItems() {
+            renderNotes(coursesData);
+            if (isHomePage) createPageButtons();
+        }
+        
+        function updateActiveButton() {
+            const buttons = pageButtonsContainer.querySelectorAll('.page-btn');
+            buttons.forEach((btn, index) => {
+                btn.classList.toggle('active', index + 1 === currentPage);
             });
-            pageButtonsContainer.appendChild(pageBtn);
         }
     }
-
-    function displayItems() {
-        renderNotes(coursesData);
-        createPageButtons();
-    }
-    
-    function updateActiveButton() {
-        const buttons = pageButtonsContainer.querySelectorAll('.page-btn');
-        buttons.forEach((btn, index) => {
-            btn.classList.toggle('active', index + 1 === currentPage);
-        });
-    }    
-
-    createPageButtons();
 
     const addButton = document.getElementById('add-btn');
     if (addButton) {
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `);
         });
     
-        updateActiveButton();
+        if (isHomePage) updateActiveButton();
     }
     
 
@@ -183,8 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             coursesData = data;
-            displayItems();
-            renderNotes(coursesData);
+            if(isHomePage) displayItems();
         });
 
     if (searchInput) {
