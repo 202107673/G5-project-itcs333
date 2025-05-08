@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const addButton = document.getElementById('add-btn');
     if (addButton) {
         addButton.addEventListener('click', function (e) {
-            e.preventDefault(); 
+            // e.preventDefault(); 
             alert('hello world');
         });
     }
