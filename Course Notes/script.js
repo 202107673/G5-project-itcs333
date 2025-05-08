@@ -12,8 +12,48 @@ document.addEventListener('DOMContentLoaded', function () {
     const addButton = document.getElementById('add-btn');
     if (addButton) {
         addButton.addEventListener('click', function (e) {
-            // e.preventDefault(); 
-            alert('hello world');
+            const courseCode = document.getElementById('course-code').value.trim();
+            const title = document.getElementById('title').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const course = document.getElementById('course').value.trim();
+            const createdAt = document.getElementById('createdAt').value.trim();
+
+            const errors = [];
+            if (!courseCode) errors.push("Course code is required.");
+            if (!title) errors.push("Title is required.");
+            if (!description || description.length < 10) errors.push("Description must be at least 10 characters.");
+            if (!course) errors.push("Course field is required.");
+            if (!createdAt || isNaN(Date.parse(createdAt))) errors.push("Valid date is required for 'Created At'.");
+
+            if (errors.length > 0) {
+                alert("Please fix the following errors:\n\n" + errors.join("\n"));
+                return;
+            }
+
+            const newCourse = {
+                courseCode,
+                title,
+                description,
+                course,
+                createdAt
+            };
+
+            fetch('./courses.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    data.push(newCourse);
+                    console.log('Updated data:', data);
+                    alert('New Cours Added');
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Failed');
+                });
         });
     }
 
@@ -126,5 +166,5 @@ document.addEventListener('DOMContentLoaded', function () {
         sortSelect.addEventListener('change', function () {
             sortNotes(this.value);
         });
-    }
+    }  
 });
