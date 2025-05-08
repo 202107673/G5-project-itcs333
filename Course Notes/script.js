@@ -5,9 +5,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const maxNotes = 9;
     let coursesData = [];
 
-    searchInput.focus();
+    if (searchInput) {
+        searchInput.focus();
+    }
+
+    const addButton = document.getElementById('add-btn');
+    if (addButton) {
+        addButton.addEventListener('click', function (e) {
+            e.preventDefault(); 
+            alert('hello world');
+        });
+    }
 
     function renderNotes(data) {
+        if (!sec) return;
         sec.innerHTML = '';
         let displayed = 0;
 
@@ -22,7 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
             displayed++;
         }
 
-        searchNote(searchInput.value.trim());
+        if (searchInput) {
+            searchNote(searchInput.value.trim());
+        }
     }
 
     function searchNote(searchValue) {
@@ -39,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const nowTime = new Date();
         let fromDate;
         let filtered;
-    
+
         if (filterValue === 'last-week') {
             fromDate = new Date();
             fromDate.setDate(nowTime.getDate() - 7);
@@ -57,15 +70,14 @@ document.addEventListener('DOMContentLoaded', function () {
             filterValue === 'Information System' ||
             filterValue === 'Business'
         ) {
-            console.log("pingo");
             filtered = coursesData.filter(note => note.course === filterValue);
         } else {
             renderNotes(coursesData);
             return;
         }
-    
+
         renderNotes(filtered);
-    }    
+    }
 
     fetch('courses.json')
         .then(response => response.json())
@@ -74,17 +86,21 @@ document.addEventListener('DOMContentLoaded', function () {
             renderNotes(coursesData);
         });
 
-    searchInput.addEventListener('input', function (e) {
-        searchNote(e.target.value.trim());
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', function (e) {
+            searchNote(e.target.value.trim());
+        });
+    }
 
-    filter.addEventListener('change', function () {
-        filterNotes(this.value);
-    });
+    if (filter) {
+        filter.addEventListener('change', function () {
+            filterNotes(this.value);
+        });
+    }
 
     function sortNotes(sortOption) {
         let sorted = [...coursesData];
-    
+
         switch (sortOption) {
             case 'Sort by Name (a-z)':
                 sorted.sort((a, b) => a.title.localeCompare(b.title));
@@ -101,14 +117,14 @@ document.addEventListener('DOMContentLoaded', function () {
             default:
                 return renderNotes(coursesData);
         }
-    
+
         renderNotes(sorted);
     }
-    
 
     const sortSelect = document.querySelector('select[name="sort"]');
-    sortSelect.addEventListener('change', function () {
-        sortNotes(this.value);
-    });
-
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function () {
+            sortNotes(this.value);
+        });
+    }
 });

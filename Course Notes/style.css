@@ -463,3 +463,8 @@ optgroup {
 option {
     padding-left: 20px;
 }
+
+#add-btn {
+    background-color: #007bff; 
+    color: white;
+}
