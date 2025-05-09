@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInput.focus();
     }
 
+    const detailPage = window.location.pathname === '/detail.html';
     const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
     if (isHomePage) {
         const prevBtn = document.getElementById('prev-btn');
@@ -137,6 +138,24 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isHomePage) updateActiveButton();
     }
     
+    function reanderDetailPage(data) {
+        const main = document.getElementsByClassName('note-detail-header')[0];
+        const htmlContent = `
+            <div id="note-detail">
+                <div id="head">
+                    <h2>${data[1].title}</h2>
+                    <h3>${data[1].courseCode}</h3>
+                    <p>created: ${data[1].createdAt}, by: John Doe</p>
+                </div>
+                <div id="body">
+                    <h3>More About:</h3>
+                    <p>${data[1].description}</p>
+                </div>
+            </div>
+        `;
+        
+        main.insertAdjacentHTML('beforeend', htmlContent);
+    }
 
     function searchNote(searchValue) {
         const notes = document.querySelectorAll('.note');
@@ -184,6 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             coursesData = data;
             if(isHomePage) displayItems();
+            if(detailPage) reanderDetailPage(coursesData);
         });
 
     if (searchInput) {
