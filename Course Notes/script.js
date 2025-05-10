@@ -124,15 +124,24 @@ document.addEventListener('DOMContentLoaded', function () {
         const startIndex = (currentPage - 1) * maxNotes;
         const endIndex = startIndex + maxNotes;
         const pageData = data.slice(startIndex, endIndex);
+        let count = startIndex;
     
         pageData.forEach(item => {
             sec.insertAdjacentHTML('beforeend', `
                 <div class="note">
                     <h3>${item.courseCode}</h3>
                     <p>${item.description}</p>
-                    <a href="detail.html">Show Details</a>
+                    <a id="${count}" class="detail-btn" href="detail.html">Show Details</a>
                 </div>
             `);
+            count ++;
+        });
+
+        const detailBtns = document.getElementsByClassName('detail-btn');
+        Array.from(detailBtns).forEach(btn => {
+            btn.addEventListener('click', function(event) {
+                localStorage.setItem('detailBtnId', event.target.id);
+            });
         });
     
         if (isHomePage) updateActiveButton();
@@ -140,16 +149,17 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function reanderDetailPage(data) {
         const main = document.getElementsByClassName('note-detail-header')[0];
+        const detailBtnId  = localStorage.getItem('detailBtnId');
         const htmlContent = `
             <div id="note-detail">
-                <div id="head">
-                    <h2>${data[1].title}</h2>
-                    <h3>${data[1].courseCode}</h3>
-                    <p>created: ${data[1].createdAt}, by: John Doe</p>
+                <div
+                    <h2>${item.title}</h2>
+                    <h3>${item.courseCode}</h3>
+                    <p>created: ${item.createdAt}, by: John Doe</p>
                 </div>
                 <div id="body">
                     <h3>More About:</h3>
-                    <p>${data[1].description}</p>
+                    <p>${item.description}</p>
                 </div>
             </div>
         `;
@@ -246,5 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
         sortSelect.addEventListener('change', function () {
             sortNotes(this.value);
         });
-    }  
+    }
+    
 });
