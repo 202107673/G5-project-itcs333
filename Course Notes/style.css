@@ -92,7 +92,7 @@ a {
 }
 
 .pagination .page-btn.active {
-    background-color: #007BFF;  /* Bootstrap blue */
+    background-color: #007BFF;
     color: white;
     border-radius: 4px;
     font-weight: bold;
