@@ -150,21 +150,26 @@ document.addEventListener('DOMContentLoaded', function () {
     function reanderDetailPage(data) {
         const main = document.getElementsByClassName('note-detail-header')[0];
         const detailBtnId  = localStorage.getItem('detailBtnId');
-        const htmlContent = `
-            <div id="note-detail">
-                <div
-                    <h2>${item.title}</h2>
-                    <h3>${item.courseCode}</h3>
-                    <p>created: ${item.createdAt}, by: John Doe</p>
+        if (detailBtnId !== null) {
+            const item = data[detailBtnId];
+            const htmlContent = `
+                <div id="note-detail">
+                    <div id="head">
+                        <h2>${item.title}</h2>
+                        <h3>${item.courseCode}</h3>
+                        <p>created: ${item.createdAt}, by: John Doe</p>
+                    </div>
+                    <div id="body">
+                        <h3>More About:</h3>
+                        <p>${item.description}</p>
+                    </div>
                 </div>
-                <div id="body">
-                    <h3>More About:</h3>
-                    <p>${item.description}</p>
-                </div>
-            </div>
-        `;
-        
-        main.insertAdjacentHTML('beforeend', htmlContent);
+            `;
+            
+            main.insertAdjacentHTML('beforeend', htmlContent);
+        } else {
+            console.error("Detail button ID not found.");
+        }
     }
 
     function searchNote(searchValue) {
