@@ -172,19 +172,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    if (detailPage) {
-        const editButton = document.getElementById('edit-btn');
-        editBtn();
-    }
+    // if (detailPage) {
+    //     const editButton = document.getElementById('edit-btn');
+    //     editBtn();
+    // }
 
-    function editBtn() {
-        editButton.addEventListener('click', function(){
-            const btnId = localStorage.getItem('detailBtnId');
-            const course = document.getElementById('course-code');
-            const description = document.getElementById('description');
-            course.textContent = data[btnId].courseCode;
-        });
-    }
+    // function editBtn() {
+    //     editButton.addEventListener('click', function(){
+    //         const btnId = localStorage.getItem('detailBtnId');
+    //         const course = document.getElementById('course-code');
+    //         const description = document.getElementById('description');
+    //         course.textContent = data[btnId].courseCode;
+    //     });
+    // }
 
     function searchNote(searchValue) {
         const notes = document.querySelectorAll('.note');
@@ -276,5 +276,11 @@ document.addEventListener('DOMContentLoaded', function () {
             sortNotes(this.value);
         });
     }
+
+    window.addEventListener("load", function () {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("content").style.display = "block";
+    });
+
     
 });
