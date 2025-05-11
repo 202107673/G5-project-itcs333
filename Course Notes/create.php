@@ -18,7 +18,7 @@
                 <p>Create a new course note entry</p>
             </section>
 
-            <form action="process.php" method="post" class="form">
+            <form method="post" class="form">
                 <label for="course-code">
                     Course Code
                     <input id="course-code" name="course_code" type="text" placeholder="Enter Course Code">
