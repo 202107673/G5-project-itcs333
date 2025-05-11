@@ -18,35 +18,35 @@
                 <p>Create a new course note entry</p>
             </section>
 
-            <section class="form">
-                    <label for="course-code">
-                        Course Code
-                        <input id="course-code" type="text" placeholder="Enter Course Code">
-                    </label>
-                    <label for="corse-title">
-                        Course Title
-                        <input id="title" type="text" placeholder="Enter Course Title">
-                    </label>
+            <form action="process.php" method="post" class="form">
+                <label for="course-code">
+                    Course Code
+                    <input id="course-code" name="course_code" type="text" placeholder="Enter Course Code">
+                </label>
+                <label for="course-title">
+                    Course Title
+                    <input id="title" name="course_title" type="text" placeholder="Enter Course Title">
+                </label>
                 <div>
                     <label for="description">
                         Description
-                        <textarea id="description" placeholder="Enter Description"></textarea>
+                        <textarea id="description" name="description" placeholder="Enter Description"></textarea>
                     </label>
-                    <label for="course">
+                    <label for="course-type">
                         Course Type
-                        <input id="course" type="text" placeholder="Enter Course type"></input>
+                        <input id="course-type" name="course_type" type="text" placeholder="Enter Course type">
                     </label>
-                    <label for="course">
+                    <label for="createdAt">
                         Created Date
-                        <input id="createdAt" type="date"></input>
+                        <input id="createdAt" name="created_at" type="date">
                     </label>
                 </div>
-            </section>
+                <section class="create-btn">
+                    <input id="add-btn" type="submit" value="Add Note">
+                    <a href="index.php">Cancel</a>
+                </section>
+            </form>
 
-            <section class="create-btn">
-                <a href="index.php" id="add-btn">Add Note</a>
-                <a href="index.php">Cancel</a>
-            </section>
         </section>
     </main>
 </body>
