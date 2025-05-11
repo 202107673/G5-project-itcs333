@@ -54,7 +54,7 @@
                     <option>Sort by Newest</option>
                     <option>Sort by Oldest</option>
                 </select>
-                <a href="create.html">Add Note</a>
+                <a href="create.php">Add Note</a>
             </div>
         </section>
 

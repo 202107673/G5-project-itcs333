@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <a href="index.html">← Back to all notes</a>
+        <a href="index.php">← Back to all notes</a>
         <h1>Course Notes</h1>
     </header>
 
@@ -25,7 +25,7 @@
             </section>
             
             <section class="btn-detail">
-                <a id="edit-btn" href="create.html" style="background-color: #007bff; color: white;">Edit</a>
+                <a id="edit-btn" href="create.php" style="background-color: #007bff; color: white;">Edit</a>
                 <a href="">Delete</a>
             </section>
 

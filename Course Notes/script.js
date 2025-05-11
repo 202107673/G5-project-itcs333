@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInput.focus();
     }
 
-    const detailPage = window.location.pathname === '/detail.html';
-    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+    const detailPage = window.location.pathname === '/website/g5-project-itcs333/course%20notes/detail.php';
+    const isHomePage = window.location.pathname === '/website/g5-project-itcs333/course%20notes/' || window.location.pathname === '/website/g5-project-itcs333/course%20notes/index.php';
     if (isHomePage) {
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="note">
                     <h3>${item.courseCode}</h3>
                     <p>${item.description}</p>
-                    <a id="${count}" class="detail-btn" href="detail.html">Show Details</a>
+                    <a id="${count}" class="detail-btn" href="detail.php">Show Details</a>
                 </div>
             `);
             count ++;
@@ -278,9 +278,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.addEventListener("load", function () {
-        document.getElementById("loader").style.display = "none";
-        document.getElementById("content").style.display = "block";
+        const loader = document.getElementById("loader");
+        const content = document.getElementById("content");
+
+        if (loader) loader.style.display = "none";
+        if (content) content.style.display = "block";
     });
 
-    
 });

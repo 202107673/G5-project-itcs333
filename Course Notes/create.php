@@ -44,8 +44,8 @@
             </section>
 
             <section class="create-btn">
-                <a href="index.html" id="add-btn">Add Note</a>
-                <a href="index.html">Cancel</a>
+                <a href="index.php" id="add-btn">Add Note</a>
+                <a href="index.php">Cancel</a>
             </section>
         </section>
     </main>
