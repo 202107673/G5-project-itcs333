@@ -172,6 +172,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    if (detailPage) {
+        const editButton = document.getElementById('edit-btn');
+        editBtn();
+    }
+
+    function editBtn() {
+        editButton.addEventListener('click', function(){
+            const btnId = localStorage.getItem('detailBtnId');
+            const course = document.getElementById('course-code');
+            const description = document.getElementById('description');
+            course.textContent = data[btnId].courseCode;
+        });
+    }
+
     function searchNote(searchValue) {
         const notes = document.querySelectorAll('.note');
         const searchLower = searchValue.toLowerCase();
