@@ -7,3 +7,4 @@ CREATE TABLE notes (
     course_type VARCHAR(20) NOT NULL,
     course_date DATE NOT NULL
 )
+

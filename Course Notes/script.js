@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 createdAt
             };
 
-            fetch('./courses.json')
+            fetch('./data.php')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`${response.status}`);
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderNotes(filtered);
     }
 
-    fetch('courses.json')
+    fetch('data.php')
         .then(response => response.json())
         .then(data => {
             coursesData = data;
