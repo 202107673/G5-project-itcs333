@@ -1,4 +1,29 @@
-/* Main Listing Page Styles */
+/* Reset and Base Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: black;
+}
+
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 16px;
+}
+
+h1, h2, h3 {
+    margin: 0 0 16px;
+}
+
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Controls Section */
 .controls {
     margin-bottom: 30px;
 }
@@ -6,6 +31,8 @@
 .search-bar {
     width: 100%;
     padding: 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
     margin-bottom: 15px;
 }
 
@@ -16,10 +43,12 @@
 }
 
 select {
-    padding: 8px;
-    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
 }
 
+/* Group Card Grid */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -27,76 +56,161 @@ select {
 }
 
 .group-card {
-    background: white;
+    background-color: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 12px;
 }
 
+.view-details {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    align-items: center;
     margin: 30px 0;
+    gap: 10px;
+    font-weight: bold;
 }
 
-/* Item Detail View Styles */
+.pagination button {
+    padding: 8px 12px;
+    border: 1px solid #007BFF;
+    background-color: white;
+    color: #007BFF;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Buttons */
+.button,
+button {
+    padding: 10px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.delete {
+    background-color: #e53e3e !important;
+    color: white;
+}
+
+/* Add New */
+.add-new {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Group Detail Page */
 .group-details {
     background: white;
     padding: 30px;
     border-radius: 8px;
+    border: 1px solid #e2e8f0;
 }
 
 .meta {
     display: flex;
     gap: 15px;
     margin: 15px 0;
+    color: #718096;
+}
+
+.content p {
+    margin: 8px 0;
 }
 
 .actions {
-    margin: 25px 0;
+    margin: 20px 0;
     display: flex;
     gap: 10px;
 }
 
-.delete {
-    background: #dc3545 !important;
-}
-
 .comments {
     margin-top: 30px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #e2e8f0;
     padding-top: 20px;
 }
 
 .back-link {
     display: block;
     margin-top: 25px;
-}
-
-button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-button, .button {
-    padding: 10px 15px;
-    background-color: #007BFF;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
+    color: #007BFF;
     text-decoration: none;
 }
 
-.secondary {
-    background-color: #6c757d;
+/* Form Styles */
+form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+label {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="datetime-local"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.required::after {
+    content: "*";
+    color: red;
+    margin-left: 4px;
+}
+
+/* Footer */
+footer {
+    background-color: #edf2f7;
+    text-align: center;
+    padding: 16px;
+    margin-top: 48px;
+    font-size: 14px;
 }
