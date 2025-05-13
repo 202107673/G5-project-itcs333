@@ -21,21 +21,21 @@
 
   <main class="form-container">
     <h2>Write a Course Review</h2>
-    <form>
+    <form id="review-form">
       <label for="course">Course Code</label>
-      <input type="text" id="course" name="course" placeholder="e.g. ITCS101"/>
+      <input type="text" id="course" name="course" placeholder="e.g. ITCS101" required/>
 
       <label for="instructor">Instructor Name</label>
-      <input type="text" id="instructor" name="instructor" />
+      <input type="text" id="instructor" name="instructor" required/>
 
       <label for="rating">Rating (1-5)</label>
-      <input type="number" id="rating" name="rating" min="1" max="5" />
+      <input type="number" id="rating" name="rating" min="1" max="5" required/>
 
       <label for="review">Your Review</label>
-      <textarea id="review" name="review" rows="5" ></textarea>
+      <textarea id="review" name="review" rows="5" required></textarea>
 
       <label for="difficulty">Difficulty</label>
-      <select id="difficulty" name="difficulty">
+      <select id="difficulty" name="difficulty" required>
         <option value="">Select difficulty</option>
         <option value="Easy">Easy</option>
         <option value="Moderate">Moderate</option>
@@ -43,7 +43,7 @@
       </select>
 
       <label for="department">Department</label>
-      <select id="department" name="department" >
+      <select id="department" name="department" required>
         <option value="">Select department</option>
         <option value="Computer Science">Computer Science</option>
         <option value="Biology">Biology</option>

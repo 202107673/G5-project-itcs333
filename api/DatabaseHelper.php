@@ -1,62 +1,102 @@
 <?php
-
+/**
+ * Database Helper Class for Course Reviews
+ * 
+ * This class provides methods for database operations related to course reviews
+ * using PDO for MySQL connections.
+ */
 class DatabaseHelper {
     private $host;
     private $dbName;
     private $username;
     private $password;
     private $pdo;
-    
-    
+
+    /**
+     * Constructor
+     * 
+     * @param string $host Database host
+     * @param string $dbName Database name
+     * @param string $username Database username
+     * @param string $password Database password
+     */
     public function __construct($host, $dbName, $username, $password) {
         $this->host = $host;
         $this->dbName = $dbName;
         $this->username = $username;
         $this->password = $password;
     }
-    
-    
+
+    /**
+     * Get PDO connection
+     * 
+     * @return PDO The PDO connection object
+     * @throws PDOException If connection fails
+     */
     public function getPDO() {
         if (!$this->pdo) {
             try {
                 $this->pdo = new PDO("mysql:host={$this->host};charset=utf8mb4", 
                                     $this->username, 
                                     $this->password);
-                
+
                 // Set error mode to exceptions
                 $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                
+
                 // Create database if it doesn't exist
                 $this->pdo->exec("CREATE DATABASE IF NOT EXISTS `{$this->dbName}`");
                 $this->pdo->exec("USE `{$this->dbName}`");
-                
+
                 // Create tables if they don't exist
                 $this->createAndPopulateReviewTables();
-                
+
             } catch (PDOException $e) {
                 throw new PDOException("Database connection failed: " . $e->getMessage());
             }
         }
-        
+
         return $this->pdo;
     }
-    
-   
+
+    /**
+     * Execute a query
+     * 
+     * @param string $sql SQL query to execute
+     * @return PDOStatement The result of the query
+     * @throws PDOException If query fails
+     */
     public function query($sql) {
         return $this->getPDO()->query($sql);
     }
-    
-    
+
+    /**
+     * Prepare a statement
+     * 
+     * @param string $sql SQL statement to prepare
+     * @return PDOStatement The prepared statement
+     * @throws PDOException If preparation fails
+     */
     public function prepare($sql) {
         return $this->getPDO()->prepare($sql);
     }
-    
-   
+
+    /**
+     * Execute a SQL statement directly
+     * 
+     * @param string $sql SQL statement to execute
+     * @return int Number of affected rows
+     * @throws PDOException If execution fails
+     */
     public function exec($sql) {
         return $this->getPDO()->exec($sql);
     }
-    
-    
+
+    /**
+     * Create the necessary tables if they don't exist and populate with sample data
+     * 
+     * @return bool True if successful
+     * @throws PDOException If creation fails
+     */
     public function createAndPopulateReviewTables() {
         // Create reviews table
         $this->exec("CREATE TABLE IF NOT EXISTS `reviews` (
@@ -71,7 +111,7 @@ class DatabaseHelper {
             `fullContent` TEXT NOT NULL,
             `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-        
+
         // Create comments table
         $this->exec("CREATE TABLE IF NOT EXISTS `comments` (
             `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -81,11 +121,11 @@ class DatabaseHelper {
             `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (`review_id`) REFERENCES `reviews`(`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-        
+
         // Check if reviews table is empty
         $stmt = $this->query("SELECT COUNT(*) FROM `reviews`");
         $count = $stmt->fetchColumn();
-        
+
         if ($count == 0) {
             // Sample review data (from your courses.json)
             $sampleReviews = [
@@ -240,16 +280,16 @@ class DatabaseHelper {
                     ]
                 ]
             ];
-            
+
             // Insert reviews
             $reviewStmt = $this->prepare("INSERT INTO `reviews` 
                 (id, courseCode, courseTitle, instructor, department, difficulty, rating, content, fullContent) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            
+
             $commentStmt = $this->prepare("INSERT INTO `comments` 
                 (id, review_id, author, text, date) 
                 VALUES (?, ?, ?, ?, ?)");
-            
+
             foreach ($sampleReviews as $review) {
                 $reviewStmt->execute([
                     $review['id'],
@@ -262,11 +302,11 @@ class DatabaseHelper {
                     $review['content'],
                     $review['fullContent']
                 ]);
-                
+
                 if (isset($review['comments']) && is_array($review['comments'])) {
                     foreach ($review['comments'] as $comment) {
                         $commentDate = date('Y-m-d H:i:s', strtotime($comment['date']));
-                        
+
                         $commentStmt->execute([
                             $comment['id'],
                             $review['id'],
@@ -277,20 +317,28 @@ class DatabaseHelper {
                     }
                 }
             }
-            
+
             return true;
         }
-        
+
         return true;
     }
-    
-    
+
+    /**
+     * Get all reviews with optional pagination and filtering
+     * 
+     * @param int|null $page Page number for pagination
+     * @param int|null $limit Items per page for pagination
+     * @param array $filters Filters to apply (search, department, difficulty, rating)
+     * @param string $sort Sort option (recent, rating-high, rating-low)
+     * @return array Array of reviews
+     */
     public function getAllReviews($page = null, $limit = null, $filters = [], $sort = 'recent') {
         $this->createAndPopulateReviewTables();
-        
+
         $sql = "SELECT * FROM `reviews` WHERE 1=1";
         $params = [];
-        
+
         // Apply filters
         if (!empty($filters['search'])) {
             $sql .= " AND (courseCode LIKE ? OR courseTitle LIKE ? OR instructor LIKE ?)";
@@ -299,22 +347,22 @@ class DatabaseHelper {
             $params[] = $searchTerm;
             $params[] = $searchTerm;
         }
-        
+
         if (!empty($filters['department'])) {
             $sql .= " AND department = ?";
             $params[] = $filters['department'];
         }
-        
+
         if (!empty($filters['difficulty'])) {
             $sql .= " AND difficulty = ?";
             $params[] = $filters['difficulty'];
         }
-        
+
         if (!empty($filters['rating'])) {
             $sql .= " AND rating >= ?";
             $params[] = (int)$filters['rating'];
         }
-        
+
         // Apply sorting
         switch ($sort) {
             case 'rating-high':
@@ -328,24 +376,24 @@ class DatabaseHelper {
                 $sql .= " ORDER BY id DESC";
                 break;
         }
-        
+
         // Add pagination if specified
         if ($page !== null && $limit !== null) {
             $page = filter_var($page, FILTER_VALIDATE_INT);
             $limit = filter_var($limit, FILTER_VALIDATE_INT);
-            
+
             // Ensure valid pagination parameters
             if ($page < 1) $page = 1;
             if ($limit < 1) $limit = 3;
-            
+
             $offset = ($page - 1) * $limit;
             $sql .= " LIMIT ?, ?";
             $params[] = $offset;
             $params[] = $limit;
         }
-        
+
         $stmt = $this->prepare($sql);
-        
+
         // Bind parameters with their types
         for ($i = 0; $i < count($params); $i++) {
             $paramIndex = $i + 1;
@@ -355,24 +403,29 @@ class DatabaseHelper {
                 $stmt->bindValue($paramIndex, $params[$i], PDO::PARAM_STR);
             }
         }
-        
+
         $stmt->execute();
         $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         // Get comments for each review
         foreach ($reviews as &$review) {
             $review['comments'] = $this->getComments($review['id']);
         }
-        
+
         return $reviews;
     }
-    
-    
+
+    /**
+     * Get the total number of reviews matching the filters
+     * 
+     * @param array $filters Filters to apply (search, department, difficulty, rating)
+     * @return int Total number of matching reviews
+     */
     public function getReviewCount($filters = []) {
         $sql = "SELECT COUNT(*) FROM `reviews` WHERE 1=1";
         $params = [];
-        
-        
+
+        // Apply filters
         if (!empty($filters['search'])) {
             $sql .= " AND (courseCode LIKE ? OR courseTitle LIKE ? OR instructor LIKE ?)";
             $searchTerm = "%{$filters['search']}%";
@@ -380,46 +433,51 @@ class DatabaseHelper {
             $params[] = $searchTerm;
             $params[] = $searchTerm;
         }
-        
+
         if (!empty($filters['department'])) {
             $sql .= " AND department = ?";
             $params[] = $filters['department'];
         }
-        
+
         if (!empty($filters['difficulty'])) {
             $sql .= " AND difficulty = ?";
             $params[] = $filters['difficulty'];
         }
-        
+
         if (!empty($filters['rating'])) {
             $sql .= " AND rating >= ?";
             $params[] = (int)$filters['rating'];
         }
-        
+
         $stmt = $this->prepare($sql);
         $stmt->execute($params);
-        
+
         return (int)$stmt->fetchColumn();
     }
-    
-    
+
+    /**
+     * Get a single review by ID with its comments
+     * 
+     * @param int $id Review ID
+     * @return array|bool Review data or false if not found
+     */
     public function getReview($id) {
         $id = filter_var($id, FILTER_VALIDATE_INT);
         if (!$id) {
             return false;
         }
-        
+
         $stmt = $this->prepare("SELECT * FROM `reviews` WHERE id = ?");
         $stmt->execute([$id]);
         $review = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($review) {
             $review['comments'] = $this->getComments($id);
         }
-        
+
         return $review;
     }
-    
+
     /**
      * Create a new review
      * 
@@ -431,11 +489,11 @@ class DatabaseHelper {
         if (!$this->validateReviewData($sanitizedData)) {
             return false;
         }
-        
+
         $stmt = $this->prepare("INSERT INTO `reviews` 
             (courseCode, courseTitle, instructor, department, difficulty, rating, content, fullContent) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        
+
         return $stmt->execute([
             $sanitizedData['courseCode'],
             $sanitizedData['courseTitle'],
@@ -447,7 +505,7 @@ class DatabaseHelper {
             $sanitizedData['fullContent']
         ]);
     }
-    
+
     /**
      * Update an existing review
      * 
@@ -460,20 +518,20 @@ class DatabaseHelper {
         if (!$id) {
             return false;
         }
-        
+
         $checkStmt = $this->prepare("SELECT COUNT(*) FROM `reviews` WHERE id = ?");
         $checkStmt->execute([$id]);
         $reviewExists = (int)$checkStmt->fetchColumn() > 0;
-        
+
         if (!$reviewExists) {
             return false;
         }
-        
+
         $sanitizedData = $this->sanitizeReviewData($reviewData);
         if (!$this->validateReviewData($sanitizedData)) {
             return false;
         }
-        
+
         $stmt = $this->prepare("UPDATE `reviews` SET 
             courseCode = ?, 
             courseTitle = ?, 
@@ -484,7 +542,7 @@ class DatabaseHelper {
             content = ?, 
             fullContent = ? 
             WHERE id = ?");
-        
+
         return $stmt->execute([
             $sanitizedData['courseCode'],
             $sanitizedData['courseTitle'],
@@ -497,7 +555,7 @@ class DatabaseHelper {
             $id
         ]);
     }
-    
+
     /**
      * Delete a review and its comments
      * 
@@ -509,23 +567,23 @@ class DatabaseHelper {
         if (!$id) {
             return false;
         }
-        
+
         $checkStmt = $this->prepare("SELECT COUNT(*) FROM `reviews` WHERE id = ?");
         $checkStmt->execute([$id]);
         $reviewExists = (int)$checkStmt->fetchColumn() > 0;
-        
+
         if (!$reviewExists) {
             return false;
         }
-        
+
         // First delete all comments for this review
         $this->prepare("DELETE FROM `comments` WHERE review_id = ?")->execute([$id]);
-        
+
         // Then delete the review
         $stmt = $this->prepare("DELETE FROM `reviews` WHERE id = ?");
         return $stmt->execute([$id]);
     }
-    
+
     /**
      * Get comments for a review
      * 
@@ -537,12 +595,12 @@ class DatabaseHelper {
         if (!$reviewId) {
             return [];
         }
-        
+
         $stmt = $this->prepare("SELECT * FROM `comments` WHERE review_id = ? ORDER BY date ASC");
         $stmt->execute([$reviewId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     /**
      * Add a comment to a review
      * 
@@ -556,26 +614,26 @@ class DatabaseHelper {
         if (!$reviewId) {
             return false;
         }
-        
+
         $author = trim(htmlspecialchars($author));
         $text = trim(htmlspecialchars($text));
-        
+
         if (empty($author) || empty($text)) {
             return false;
         }
-        
+
         $checkStmt = $this->prepare("SELECT COUNT(*) FROM `reviews` WHERE id = ?");
         $checkStmt->execute([$reviewId]);
         $reviewExists = (int)$checkStmt->fetchColumn() > 0;
-        
+
         if (!$reviewExists) {
             return false;
         }
-        
+
         $stmt = $this->prepare("INSERT INTO `comments` (review_id, author, text) VALUES (?, ?, ?)");
         return $stmt->execute([$reviewId, $author, $text]);
     }
-    
+
     /**
      * Get all unique departments
      * 
@@ -583,15 +641,15 @@ class DatabaseHelper {
      */
     public function getDepartments() {
         $stmt = $this->query("SELECT DISTINCT department FROM `reviews` ORDER BY department ASC");
-        
+
         $departments = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $departments[] = $row['department'];
         }
-        
+
         return $departments;
     }
-    
+
     /**
      * Sanitize review data
      * 
@@ -600,7 +658,7 @@ class DatabaseHelper {
      */
     private function sanitizeReviewData($reviewData) {
         $sanitized = [];
-        
+
         $textFields = ['courseCode', 'courseTitle', 'instructor', 'department', 'content', 'fullContent'];
         foreach ($textFields as $field) {
             if (isset($reviewData[$field])) {
@@ -609,7 +667,7 @@ class DatabaseHelper {
                 $sanitized[$field] = '';
             }
         }
-        
+
         // Handle difficulty
         if (isset($reviewData['difficulty'])) {
             $difficulty = trim($reviewData['difficulty']);
@@ -621,7 +679,7 @@ class DatabaseHelper {
         } else {
             $sanitized['difficulty'] = 'Moderate'; // Default
         }
-        
+
         // Handle rating
         if (isset($reviewData['rating'])) {
             $rating = (int)$reviewData['rating'];
@@ -633,10 +691,10 @@ class DatabaseHelper {
         } else {
             $sanitized['rating'] = 3; // Default
         }
-        
+
         return $sanitized;
     }
-    
+
     /**
      * Validate review data
      * 
@@ -645,21 +703,21 @@ class DatabaseHelper {
      */
     private function validateReviewData($reviewData) {
         $requiredFields = ['courseCode', 'courseTitle', 'instructor', 'department', 'difficulty', 'rating', 'content', 'fullContent'];
-        
+
         foreach ($requiredFields as $field) {
             if (empty($reviewData[$field])) {
                 return false;
             }
         }
-        
+
         if ($reviewData['rating'] < 1 || $reviewData['rating'] > 5) {
             return false;
         }
-        
+
         if (!in_array($reviewData['difficulty'], ['Easy', 'Moderate', 'Hard'])) {
             return false;
         }
-        
+
         return true;
     }
 }

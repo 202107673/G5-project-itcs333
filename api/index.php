@@ -130,7 +130,6 @@ try {
             $reviewId = isset($data['review_id']) ? filter_var($data['review_id'], FILTER_VALIDATE_INT) : null;
             $author = isset($data['author']) ? trim($data['author']) : '';
             $text = isset($data['text']) ? trim($data['text']) : '';
-            
             if ($reviewId && !empty($author) && !empty($text)) {
                 if ($db->addComment($reviewId, $author, $text)) {
                     respond(['status' => 'success', 'message' => 'Comment added successfully'], 201);
