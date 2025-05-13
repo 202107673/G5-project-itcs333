@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInput.focus();
     }
 
-    const detailPage = window.location.pathname === '/website/g5-project-itcs333/course%20notes/detail.php';
-    const isHomePage = window.location.pathname === '/website/g5-project-itcs333/course%20notes/' || window.location.pathname === '/website/g5-project-itcs333/course%20notes/index.php';
+    const detailPage = window.location.pathname.includes('detail.php');
+    const isHomePage = window.location.pathname.includes('index.php') || window.location.pathname.endsWith('Course Notes/');
     if (isHomePage) {
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
@@ -88,30 +88,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const newCourse = {
-                courseCode,
-                title,
-                description,
-                course,
-                createdAt
-            };
+            // const newCourse = {
+            //     courseCode,
+            //     title,
+            //     description,
+            //     course,
+            //     createdAt
+            // };
 
-            fetch('./data.php')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    data.push(newCourse);
-                    console.log('Updated data:', data);
-                    alert('New Cours Added');
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert('Failed');
-                });
+            // fetch('./data.php')
+            //     .then(response => {
+            //         if (!response.ok) {
+            //             throw new Error(`${response.status}`);
+            //         }
+            //         return response.json();
+            //     })
+            //     .then(data => {
+            //         data.push(newCourse);
+            //         console.log('Updated data:', data);
+            //         alert('New Cours Added');
+            //     })
+            //     .catch(error => {
+            //         console.error(error);
+            //         alert('Failed');
+            //     });
         });
     }
 
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="note">
                     <h3>${item.courseCode}</h3>
                     <p>${item.description}</p>
-                    <a id="${count}" class="detail-btn" href="detail.php">Show Details</a>
+                    <a id="${count}" class="detail-btn" href="detail.php?code=${item.courseCode}">Show Details</a>
                 </div>
             `);
             count ++;
@@ -147,30 +147,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isHomePage) updateActiveButton();
     }
     
-    function reanderDetailPage(data) {
-        const main = document.getElementsByClassName('note-detail-header')[0];
-        const detailBtnId  = localStorage.getItem('detailBtnId');
-        if (detailBtnId !== null) {
-            const item = data[detailBtnId];
-            const htmlContent = `
-                <div id="note-detail">
-                    <div id="head">
-                        <h2>${item.title}</h2>
-                        <h3>${item.courseCode}</h3>
-                        <p>created: ${item.createdAt}, by: John Doe</p>
-                    </div>
-                    <div id="body">
-                        <h3>More About:</h3>
-                        <p>${item.description}</p>
-                    </div>
-                </div>
-            `;
-            
-            main.insertAdjacentHTML('beforeend', htmlContent);
-        } else {
-            console.error("Detail button ID not found.");
-        }
-    }
+    // function reanderDetailPage(data) {
+    //     console.log('Detail page is now handled by PHP');
+    // }
 
     // if (detailPage) {
     //     const editButton = document.getElementById('edit-btn');

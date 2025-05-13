@@ -1,3 +1,6 @@
+CREATE DATABASE Notes;
+USE Notes;
+
 CREATE TABLE notes (
     course_code CHAR(7) PRIMARY KEY,
     course_name VARCHAR(50) NOT NULL,
@@ -80,7 +83,7 @@ VALUES(
     'Information System',
     '2025-03-17'
 ),(
-    'MATHS101',
+    'MATHS111',
     'Calculus One',
     'Introduction to differential and integral calculus, limits, continuity, and applications to real-world problems.',
     'Science',
@@ -98,7 +101,7 @@ VALUES(
     'Science',
     '2023-10-02'
 ),(
-    'PHYCS101',
+    'PHYCS111',
     'Physics One',
     'Fundamentals of mechanics, thermodynamics, and wave motion with laboratory experiments.',
     'Science',
