@@ -1,204 +1,267 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const mainSection = document.querySelector('.main-section')
-    if (mainSection) {
-        mainSection.innerHTML = '<p>Loading notes...</p>'
-        fetch('courses.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch course data')
-                }
-                return response.json()
-            })
-            .then(data => {
-                mainSection.innerHTML = ''
-                data.forEach(course => {
-                    const courseDiv = document.createElement('div')
-                    courseDiv.className = 'note'
-                    courseDiv.innerHTML = `
-                        <h3>${course.courseCode}</h3>
-                        <p>${course.description}</p>
-                        <a href="detail.html?id=${course.id}">Show Details</a>
-                    `
-                    mainSection.appendChild(courseDiv)
-                })
-            })
-            .catch(error => {
-                mainSection.innerHTML = '<p>Error loading notes.</p>'
-            })
-    }
-})
-
-let allCourses = []
-let currentPage = 1
-let itemsPerPage = 4
-let searchTerm = ''
-let sortOption = ''
-
-document.addEventListener('DOMContentLoaded', () => {
-    const mainSection = document.querySelector('.main-section')
-    const searchInput = document.querySelector('.search')
-    const sortSelect = document.querySelector('select[name="sort"]')
-    const paginationDiv = document.querySelector('.btn-section div:first-child')
-
-    document.querySelector('.loading').style.display = 'block'
-
-    fetch('courses.json')
-        .then(response => response.json())
-        .then(data => {
-            allCourses = data
-            renderCourses()
-            renderPagination()
-        })
-        .finally(() => {
-            document.querySelector('.loading').style.display = 'none'
-        })
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.querySelector('.search');
+    const filter = document.getElementById('filter-dropdown');
+    const sec = document.getElementsByClassName('main-section')[0];
+    const maxNotes = 9;
+    let currentPage = 1;
+    let totalPages = 1;
+    let coursesData = [];
 
     if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            searchTerm = e.target.value.toLowerCase()
-            currentPage = 1
-            renderCourses()
-            renderPagination()
-        })
+        searchInput.focus();
     }
 
-    if (sortSelect) {
-        sortSelect.addEventListener('change', (e) => {
-            sortOption = e.target.value
-            renderCourses()
-        })
-    }
+    const detailPage = window.location.pathname.includes('detail.php');
+    const isHomePage = window.location.pathname.includes('index.php') || window.location.pathname.endsWith('Course Notes/');
+    if (isHomePage) {
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageButtonsContainer = document.getElementById('btn-div');
 
-    if (paginationDiv) {
-        paginationDiv.addEventListener('click', (e) => {
-            if (e.target.tagName === 'A') {
-                e.preventDefault()
-                const page = e.target.dataset.page
-                if (page) {
-                    currentPage = parseInt(page)
-                    renderCourses()
-                    renderPagination()
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                displayItems();
+            }
+        });
+        
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayItems();
+            }
+        });    
+        
+    
+        function createPageButtons() {
+            pageButtonsContainer.innerHTML = '';
+        
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('a');
+                pageBtn.textContent = i;
+                pageBtn.classList.add('page-btn');
+                if (i === currentPage) {
+                    pageBtn.classList.add('active');
                 }
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    displayItems();
+                });
+                pageButtonsContainer.appendChild(pageBtn);
             }
-        })
-    }
-})
-
-function renderCourses() {
-    const mainSection = document.querySelector('.main-section')
-    if (!mainSection) return
-
-    let filtered = allCourses.filter(course => {
-        return course.courseCode.toLowerCase().includes(searchTerm) || course.title.toLowerCase().includes(searchTerm)
-    })
-
-    if (sortOption === "Sort by Name (a-z)") {
-        filtered.sort((a, b) => a.title.localeCompare(b.title))
-    } else if (sortOption === "Sort by Name (z-a)") {
-        filtered.sort((a, b) => b.title.localeCompare(a.title))
-    }
-
-    const start = (currentPage - 1) * itemsPerPage
-    const end = start + itemsPerPage
-    const paginated = filtered.slice(start, end)
-
-    mainSection.innerHTML = ''
-
-    paginated.forEach(course => {
-        const div = document.createElement('div')
-        div.className = 'note'
-        div.innerHTML = `
-            <h3>${course.courseCode}</h3>
-            <p>${course.description}</p>
-            <a href="detail.html?id=${course.id}">Show Details</a>
-        `
-        mainSection.appendChild(div)
-    })
-
-    if (paginated.length === 0) {
-        mainSection.innerHTML = '<p>No courses found.</p>'
-    }
-}
-
-function renderPagination() {
-    const paginationDiv = document.querySelector('.btn-section div:first-child')
-    if (!paginationDiv) return
-
-    let filtered = allCourses.filter(course => {
-        return course.courseCode.toLowerCase().includes(searchTerm) || course.title.toLowerCase().includes(searchTerm)
-    })
-
-    const totalPages = Math.ceil(filtered.length / itemsPerPage)
-
-    paginationDiv.innerHTML = ''
-
-    if (totalPages > 1) {
-        paginationDiv.innerHTML += `<a href="#" data-page="${currentPage > 1 ? currentPage - 1 : 1}">&laquo;</a>`
-        for (let i = 1; i <= totalPages; i++) {
-            paginationDiv.innerHTML += `<a href="#" data-page="${i}">${i}</a>`
         }
-        paginationDiv.innerHTML += `<a href="#" data-page="${currentPage < totalPages ? currentPage + 1 : totalPages}">&raquo;</a>`
+
+        function displayItems() {
+            renderNotes(coursesData);
+            if (isHomePage) createPageButtons();
+        }
+        
+        function updateActiveButton() {
+            const buttons = pageButtonsContainer.querySelectorAll('.page-btn');
+            buttons.forEach((btn, index) => {
+                btn.classList.toggle('active', index + 1 === currentPage);
+            });
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const addButton = document.querySelector('.create-btn a:first-child')
-    const courseCodeInput = document.querySelector('input[placeholder="Enter Course Code"]')
-    const courseTitleInput = document.querySelector('input[placeholder="Enter Course Title"]')
-    const descriptionInput = document.querySelector('textarea')
-
+    const addButton = document.getElementById('add-btn');
     if (addButton) {
-        addButton.addEventListener('click', (e) => {
-            e.preventDefault()
-            if (courseCodeInput.value.trim() === '' || courseTitleInput.value.trim() === '' || descriptionInput.value.trim() === '') {
-                alert('Please fill all the fields')
-            } else {
-                alert('Note added successfully (but not really because we are not submitting)')
+        addButton.addEventListener('click', function (e) {
+            const courseCode = document.getElementById('course-code').value.trim();
+            const title = document.getElementById('title').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const course = document.getElementById('course').value.trim();
+            const createdAt = document.getElementById('createdAt').value.trim();
+
+            const errors = [];
+            if (!courseCode) errors.push("Course code is required.");
+            if (!title) errors.push("Title is required.");
+            if (!description || description.length < 10) errors.push("Description must be at least 10 characters.");
+            if (!course) errors.push("Course field is required.");
+            if (!createdAt || isNaN(Date.parse(createdAt))) errors.push("Valid date is required for 'Created At'.");
+
+            if (errors.length > 0) {
+                e.preventDefault();
+                alert("Please fix the following errors:\n\n" + errors.join("\n"));
+                return;
             }
-        })
+
+            // const newCourse = {
+            //     courseCode,
+            //     title,
+            //     description,
+            //     course,
+            //     createdAt
+            // };
+
+            // fetch('./data.php')
+            //     .then(response => {
+            //         if (!response.ok) {
+            //             throw new Error(`${response.status}`);
+            //         }
+            //         return response.json();
+            //     })
+            //     .then(data => {
+            //         data.push(newCourse);
+            //         console.log('Updated data:', data);
+            //         alert('New Cours Added');
+            //     })
+            //     .catch(error => {
+            //         console.error(error);
+            //         alert('Failed');
+            //     });
+        });
     }
-})
 
-document.addEventListener('DOMContentLoaded', () => {
-    const addButton = document.querySelector('.create-btn a:first-child')
-    const courseCodeInput = document.querySelector('input[placeholder="Enter Course Code"]')
-    const courseTitleInput = document.querySelector('input[placeholder="Enter Course Title"]')
-    const descriptionInput = document.querySelector('textarea')
+    function renderNotes(data) {
+        totalPages = Math.ceil(data.length / maxNotes);
+        if (!sec) return;
+        sec.innerHTML = '';
+    
+        totalPages = Math.ceil(data.length / maxNotes);
+        const startIndex = (currentPage - 1) * maxNotes;
+        const endIndex = startIndex + maxNotes;
+        const pageData = data.slice(startIndex, endIndex);
+        let count = startIndex;
+    
+        pageData.forEach(item => {
+            sec.insertAdjacentHTML('beforeend', `
+                <div class="note">
+                    <h3>${item.courseCode}</h3>
+                    <p>${item.description}</p>
+                    <a id="${count}" class="detail-btn" href="detail.php?code=${item.courseCode}">Show Details</a>
+                </div>
+            `);
+            count ++;
+        });
 
-    const courseCodeError = courseCodeInput.nextElementSibling
-    const courseTitleError = courseTitleInput.nextElementSibling
-    const descriptionError = descriptionInput.nextElementSibling
-
-    if (addButton) {
-        addButton.addEventListener('click', (e) => {
-            e.preventDefault()
-
-            let isValid = true
-
-            if (courseCodeInput.value.trim() === '') {
-                courseCodeError.style.display = 'block'
-                isValid = false
-            } else {
-                courseCodeError.style.display = 'none'
-            }
-
-            if (courseTitleInput.value.trim() === '') {
-                courseTitleError.style.display = 'block'
-                isValid = false
-            } else {
-                courseTitleError.style.display = 'none'
-            }
-
-            if (descriptionInput.value.trim() === '') {
-                descriptionError.style.display = 'block'
-                isValid = false
-            } else {
-                descriptionError.style.display = 'none'
-            }
-
-            if (isValid) {
-                alert('Note added successfully (but not really because we are not submitting)')
-            }
-        })
+        const detailBtns = document.getElementsByClassName('detail-btn');
+        Array.from(detailBtns).forEach(btn => {
+            btn.addEventListener('click', function(event) {
+                localStorage.setItem('detailBtnId', event.target.id);
+            });
+        });
+    
+        if (isHomePage) updateActiveButton();
     }
-})
+    
+    // function reanderDetailPage(data) {
+    //     console.log('Detail page is now handled by PHP');
+    // }
+
+    // if (detailPage) {
+    //     const editButton = document.getElementById('edit-btn');
+    //     editBtn();
+    // }
+
+    // function editBtn() {
+    //     editButton.addEventListener('click', function(){
+    //         const btnId = localStorage.getItem('detailBtnId');
+    //         const course = document.getElementById('course-code');
+    //         const description = document.getElementById('description');
+    //         course.textContent = data[btnId].courseCode;
+    //     });
+    // }
+
+    function searchNote(searchValue) {
+        const notes = document.querySelectorAll('.note');
+        const searchLower = searchValue.toLowerCase();
+
+        notes.forEach(note => {
+            const courseCode = note.querySelector('h3').textContent.toLowerCase();
+            note.style.display = courseCode.includes(searchLower) ? '' : 'none';
+        });
+    }
+
+    function filterNotes(filterValue) {
+        const nowTime = new Date();
+        let fromDate;
+        let filtered;
+
+        if (filterValue === 'last-week') {
+            fromDate = new Date();
+            fromDate.setDate(nowTime.getDate() - 7);
+            filtered = coursesData.filter(note => new Date(note.createdAt) >= fromDate);
+        } else if (filterValue === 'last-month') {
+            fromDate = new Date();
+            fromDate.setMonth(nowTime.getMonth() - 1);
+            filtered = coursesData.filter(note => new Date(note.createdAt) >= fromDate);
+        } else if (filterValue === 'last-year') {
+            fromDate = new Date();
+            fromDate.setFullYear(nowTime.getFullYear() - 1);
+            filtered = coursesData.filter(note => new Date(note.createdAt) >= fromDate);
+        } else if (
+            filterValue === 'Science' ||
+            filterValue === 'Information System' ||
+            filterValue === 'Business'
+        ) {
+            filtered = coursesData.filter(note => note.course === filterValue);
+        } else {
+            renderNotes(coursesData);
+            return;
+        }
+
+        renderNotes(filtered);
+    }
+
+    fetch('data.php')
+        .then(response => response.json())
+        .then(data => {
+            coursesData = data;
+            if(isHomePage) displayItems();
+            if(detailPage) reanderDetailPage(coursesData);
+        });
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function (e) {
+            searchNote(e.target.value.trim());
+        });
+    }
+
+    if (filter) {
+        filter.addEventListener('change', function () {
+            filterNotes(this.value);
+        });
+    }
+
+    function sortNotes(sortOption) {
+        let sorted = [...coursesData];
+
+        switch (sortOption) {
+            case 'Sort by Name (a-z)':
+                sorted.sort((a, b) => a.title.localeCompare(b.title));
+                break;
+            case 'Sort by Name (z-a)':
+                sorted.sort((a, b) => b.title.localeCompare(a.title));
+                break;
+            case 'Sort by Newest':
+                sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                break;
+            case 'Sort by Oldest':
+                sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                break;
+            default:
+                return renderNotes(coursesData);
+        }
+
+        renderNotes(sorted);
+    }
+
+    const sortSelect = document.querySelector('select[name="sort"]');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function () {
+            sortNotes(this.value);
+        });
+    }
+
+    window.addEventListener("load", function () {
+        const loader = document.getElementById("loader");
+        const content = document.getElementById("content");
+
+        if (loader) loader.style.display = "none";
+        if (content) content.style.display = "block";
+    });
+
+});

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Corse Notes</title>
+</head>
+<body>
+    <header>
+        <h1>Course Notes</h1>
+        <div>
+            <input type="search" class="search" placeholder="Search For Notes">
+            <!-- <button>Filter</button> -->
+            <select name="filter" id="filter-dropdown">
+                <option value="" selected disabled hidden>Filter</option>
+                <optgroup label="Time">
+                  <option value="last-week">Last Week</option>
+                  <option value="last-month">Last Month</option>
+                  <option value="last-year">Last Year</option>
+                </optgroup>
+                
+                <optgroup label="Course">
+                  <option value="Science">Science</option>
+                  <option value="Information System">Information System</option>
+                  <option value="Business">Business</option>
+                </optgroup>
+                <option value="">All</option>
+              </select>
+        </div>
+    </header>
+
+    <main>
+
+        <div id="loader">
+            Loading...
+        </div>
+
+
+        <section class="btn-section">
+            <div class="pagination">
+                <a id="prev-btn" href="">&laquo;</a>
+                <div id="btn-div">
+                    
+                </div>
+                <a id="next-btn" href="">&raquo;</a>
+            </div>
+            <div>
+                <!-- <button title="sort">Sort</button> -->
+                <select name="sort">
+                    <option value="" selected disabled hidden>Sort By</option>
+                    <option>Sort by Name (a-z)</option>
+                    <option>Sort by Name (z-a)</option>
+                    <option>Sort by Newest</option>
+                    <option>Sort by Oldest</option>
+                </select>
+                <a href="create.php">Add Note</a>
+            </div>
+        </section>
+
+        <section class="main-section">
+            
+
+        </section>
+    </main>
+
+    <footer>
+        <h3>&copy; 2025 Your University. All rights reserved.</h3>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
