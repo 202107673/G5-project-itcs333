@@ -1,8 +1,6 @@
 // state object with properties
 const state = {
     reviews: [], //when your application first loads, there are no course reviews loaded yet.
-    //Later in your code, this array will be populated with review objects fetched from the courses.json file.
-    //Each object in the array will represent one course review with properties like id, courseCode, courseTitle, etc. 
     filteredReviews: [],
     currentPage: 1,
     reviewsPerPage: 3, //To not forget **** Show 3 cards(Reviews) per page
@@ -15,24 +13,73 @@ const state = {
       rating: ''
     }
   };
+
+  // API base URL - replace with your Replit URL
+  const API_BASE_URL = 'https://c3a143ca-9ea1-47c4-b047-92244630af62-00-spw7mnp6b1m0.sisko.replit.dev';
   
-  // Fetch all reviews from our JSON file
+  // Fetch all reviews from our API
   async function fetchReviews() {
     try {
       showLoading();
       
-      // Fetch our courses.json file
-      const response = await fetch('/phase2-reviews/courses.json');
+      // Build query parameters based on filters
+      const queryParams = new URLSearchParams();
+      queryParams.append('page', state.currentPage);
+      queryParams.append('limit', state.reviewsPerPage);
+      
+      if (state.filters.search) {
+        queryParams.append('search', state.filters.search);
+      }
+      
+      if (state.filters.department) {
+        // Convert short department code to full name if needed
+        const departmentMap = {
+          'cs': 'Computer Science',
+          'bio': 'Biology',
+          'eng': 'English',
+          'math': 'Mathematics',
+          'phys': 'Physics'
+        };
+        
+        const departmentValue = departmentMap[state.filters.department] || state.filters.department;
+        queryParams.append('department', departmentValue);
+      }
+      
+      if (state.filters.level) {
+        queryParams.append('difficulty', state.filters.level);
+      }
+      
+      if (state.filters.rating) {
+        queryParams.append('rating', state.filters.rating);
+      }
+      
+      queryParams.append('sort', state.sortOption);
+      
+      // Fetch reviews from the API
+      const response = await fetch(`${API_BASE_URL}?${queryParams.toString()}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       
-      const data = await response.json();
-      state.reviews = data;
-      state.filteredReviews = [...state.reviews];
-      hideLoading();
+      const result = await response.json();
       
+      // Check if the response is successful and has the expected structure
+      if (result.status !== 'success' || !result.data) {
+        throw new Error('Invalid API response format');
+      }
+      
+      // Update state with the received data
+      state.reviews = result.data;
+      state.filteredReviews = [...state.reviews];
+      
+      // Update total reviews count and pagination
+      if (result.total) {
+        state.totalReviews = result.total;
+        state.totalPages = result.total_pages;
+      }
+      
+      hideLoading();
       return state.reviews;
     } catch (error) {
       console.error('Error fetching reviews:', error);
@@ -54,22 +101,97 @@ const state = {
         return cachedReview;
       }
       
-      // Otherwise, fetch from JSON file
-      const response = await fetch('/phase2-reviews/courses.json');
+      // Otherwise, fetch from API
+      const response = await fetch(`${API_BASE_URL}?id=${id}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       
-      const data = await response.json();
-      const review = data.find(review => review.id === parseInt(id));
+      const result = await response.json();
       
+      // Check if the response is successful and has the expected structure
+      if (result.status !== 'success' || !result.data) {
+        throw new Error('Invalid API response format');
+      }
+      
+      const review = result.data;
       hideLoading();
       return review;
     } catch (error) {
       console.error('Error fetching review:', error);
       hideLoading();
       showError('Failed to load review. Please try again later.');
+      return null;
+    }
+  }
+
+  // Submit a new review
+  async function submitReview(reviewData) {
+    try {
+      showLoading();
+      
+      const response = await fetch(API_BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reviewData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      if (result.status !== 'success') {
+        throw new Error(result.message || 'Failed to submit review');
+      }
+      
+      hideLoading();
+      return result.data;
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      hideLoading();
+      showError(error.message || 'Failed to submit review. Please try again later.');
+      return null;
+    }
+  }
+
+  // Submit a new comment
+  async function submitComment(reviewId, author, text) {
+    try {
+      showLoading();
+      
+      const response = await fetch(`${API_BASE_URL}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          review_id: reviewId,
+          author: author,
+          text: text
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      if (result.status !== 'success') {
+        throw new Error(result.message || 'Failed to submit comment');
+      }
+      
+      hideLoading();
+      return result.data;
+    } catch (error) {
+      console.error('Error submitting comment:', error);
+      hideLoading();
+      showError('Failed to submit comment. Please try again later.');
       return null;
     }
   }
@@ -87,12 +209,7 @@ const state = {
       return;
     }
     
-    // Calculate pagination
-    const startIndex = (state.currentPage - 1) * state.reviewsPerPage; // to control the cards with the pages
-    const endIndex = startIndex + state.reviewsPerPage;
-    const paginatedReviews = reviews.slice(startIndex, endIndex);
-    
-    paginatedReviews.forEach(review => {
+    reviews.forEach(review => {
       const card = document.createElement('div');
       card.className = 'review-card';
       card.innerHTML = `
@@ -108,8 +225,9 @@ const state = {
       reviewsGrid.appendChild(card);
     });
     
-    renderPagination(reviews.length);
+    renderPagination(state.totalReviews || reviews.length);
   }
+  
   // Render star rating
   function renderStars(rating) {
     let stars = '';
@@ -125,7 +243,7 @@ const state = {
     
     if (!paginationDiv) return;
     
-    const totalPages = Math.ceil(totalItems / state.reviewsPerPage);
+    const totalPages = state.totalPages || Math.ceil(totalItems / state.reviewsPerPage);
     
     // Clear existing buttons
     paginationDiv.innerHTML = '';
@@ -137,7 +255,9 @@ const state = {
     prevButton.addEventListener('click', () => {
       if (state.currentPage > 1) {
         state.currentPage--;
-        renderReviewCards(state.filteredReviews);
+        fetchReviews().then(reviews => {
+          renderReviewCards(reviews);
+        });
       }
     });
     paginationDiv.appendChild(prevButton);
@@ -155,7 +275,9 @@ const state = {
     nextButton.addEventListener('click', () => {
       if (state.currentPage < totalPages) {
         state.currentPage++;
-        renderReviewCards(state.filteredReviews);
+        fetchReviews().then(reviews => {
+          renderReviewCards(reviews);
+        });
       }
     });
     paginationDiv.appendChild(nextButton);
@@ -190,6 +312,47 @@ const state = {
 
     // Render course-specific comments
     renderComments(review.comments);
+
+    // Set up edit and delete buttons
+    const editButton = document.querySelector('.review-detail button:nth-child(1)');
+    if (editButton) {
+      editButton.addEventListener('click', () => {
+        // Redirect to add review page with review id as parameter for editing
+        window.location.href = `add-review.html?edit=${review.id}`;
+      });
+    }
+
+    const deleteButton = document.querySelector('.review-detail button.btn-danger');
+    if (deleteButton) {
+      deleteButton.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to delete this review?')) {
+          try {
+            showLoading();
+            const response = await fetch(`${API_BASE_URL}?id=${review.id}`, {
+              method: 'DELETE'
+            });
+            
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            
+            if (result.status !== 'success') {
+              throw new Error(result.message || 'Failed to delete review');
+            }
+            
+            hideLoading();
+            alert('Review deleted successfully!');
+            window.location.href = 'Review.html';
+          } catch (error) {
+            console.error('Error deleting review:', error);
+            hideLoading();
+            showError('Failed to delete review. Please try again later.');
+          }
+        }
+      });
+    }
   }
 
   // Render comments for a specific course
@@ -215,7 +378,7 @@ const state = {
       commentElement.className = 'comment';
       commentElement.innerHTML = `
         <div class="comment-author">${comment.author}</div>
-        <div class="comment-date">${comment.date}</div>
+        <div class="comment-date">${new Date(comment.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
         <p>${comment.text}</p>
       `;
       
@@ -224,68 +387,12 @@ const state = {
     });
   }
 
-  // Apply filters and sort the reviews
+  // Apply filters and sort the reviews by fetching from the API
   function applyFiltersAndSort() {
     state.currentPage = 1;
-    
-    let filtered = [...state.reviews];
-    
-    // Apply search filter
-    if (state.filters.search) {
-      const searchTerm = state.filters.search.toLowerCase();
-      filtered = filtered.filter(review => 
-        review.courseCode.toLowerCase().includes(searchTerm) ||
-        review.courseTitle.toLowerCase().includes(searchTerm) ||
-        review.instructor.toLowerCase().includes(searchTerm)
-      );
-    }
-    
-    // Apply department filter
-    if (state.filters.department) {
-      const departmentMap = {
-        'cs': 'Computer Science',
-        'bio': 'Biology',
-        'eng': 'English',
-        'math': 'Mathematics',
-        'phys': 'Physics'
-      };
-      
-      filtered = filtered.filter(review => 
-        review.department === departmentMap[state.filters.department]
-      );
-    }
-    
-    // Apply level filter
-    if (state.filters.level) {
-      filtered = filtered.filter(review => 
-        review.difficulty === state.filters.level
-      );
-    }
-    
-    // Apply rating filter
-    if (state.filters.rating) {
-      const minRating = parseInt(state.filters.rating);
-      filtered = filtered.filter(review => 
-        review.rating >= minRating
-      );
-    }
-    
-    // Apply sorting
-    switch (state.sortOption) {
-      case 'recent':
-        // Sort by ID (higher ID is more recent in our data)
-        filtered.sort((a, b) => b.id - a.id);
-        break;
-      case 'rating-high':
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'rating-low':
-        filtered.sort((a, b) => a.rating - b.rating);
-        break;
-    }
-    
-    state.filteredReviews = filtered;
-    renderReviewCards(filtered);
+    fetchReviews().then(reviews => {
+      renderReviewCards(reviews);
+    });
   }
 
   // Simple functions to show/hide loading indicator
@@ -462,14 +569,104 @@ const state = {
   // Initialize the add review page
   function initAddReviewPage() {
     const form = document.querySelector('form');
+    const urlParams = new URLSearchParams(window.location.search);
+    const editId = urlParams.get('edit');
     
     if (form) {
-      form.addEventListener('submit', (e) => {
+      // If we're editing an existing review, fill the form with its data
+      if (editId) {
+        fetchReviewById(editId).then(review => {
+          if (review) {
+            // Fill the form with the review data
+            const courseInput = form.querySelector('#course');
+            const instructorInput = form.querySelector('#instructor');
+            const ratingInput = form.querySelector('#rating');
+            const reviewInput = form.querySelector('#review');
+            const difficultyInput = form.querySelector('#difficulty');
+            const departmentInput = form.querySelector('#department');
+            
+            if (courseInput) courseInput.value = review.courseCode;
+            if (instructorInput) instructorInput.value = review.instructor;
+            if (ratingInput) ratingInput.value = review.rating;
+            if (reviewInput) reviewInput.value = review.fullContent;
+            if (difficultyInput) difficultyInput.value = review.difficulty;
+            if (departmentInput) {
+              // Find and select the matching option
+              const options = departmentInput.options;
+              for (let i = 0; i < options.length; i++) {
+                if (options[i].textContent === review.department) {
+                  departmentInput.selectedIndex = i;
+                  break;
+                }
+              }
+            }
+            
+            // Change submit button text to indicate editing
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.textContent = 'Update Review';
+          }
+        });
+      }
+      
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         if (validateAddReviewForm(form)) {
-          alert('Review submitted successfully!');
-          form.reset();
+          // Gather form data
+          const courseCode = form.querySelector('#course').value;
+          const instructor = form.querySelector('#instructor').value;
+          const rating = parseInt(form.querySelector('#rating').value);
+          const content = form.querySelector('#review').value;
+          const difficulty = form.querySelector('#difficulty').value;
+          const departmentSelect = form.querySelector('#department');
+          const department = departmentSelect.options[departmentSelect.selectedIndex].text;
+          
+          // Prepare the review data
+          const reviewData = {
+            courseCode: courseCode,
+            courseTitle: courseCode, // You may want to add a separate field for course title
+            instructor: instructor,
+            department: department,
+            difficulty: difficulty,
+            rating: rating,
+            content: content.substring(0, 255), // Short description (limited to 255 chars)
+            fullContent: content
+          };
+          
+          try {
+            if (editId) {
+              // Update an existing review
+              const response = await fetch(`${API_BASE_URL}?id=${editId}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reviewData)
+              });
+              
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              
+              const result = await response.json();
+              
+              if (result.status !== 'success') {
+                throw new Error(result.message || 'Failed to update review');
+              }
+              
+              alert('Review updated successfully!');
+            } else {
+              // Create a new review
+              const result = await submitReview(reviewData);
+              if (result) {
+                alert('Review submitted successfully!');
+                form.reset();
+              }
+            }
+          } catch (error) {
+            console.error('Error saving review:', error);
+            showError('Failed to save review. Please try again later.');
+          }
         }
       });
     }
@@ -484,44 +681,58 @@ const state = {
     const commentTextarea = commentForm.querySelector('textarea');
     
     if (commentButton && commentTextarea) {
-      commentButton.addEventListener('click', () => {
+      commentButton.addEventListener('click', async () => {
         const commentText = commentTextarea.value.trim();
         
         if (commentText) {
-          // In a real app, we would save this to a database
-          // For demo purposes, we'll just add it to the UI
-          const commentSection = document.querySelector('.comments-section');
-          const newComment = document.createElement('div');
-          newComment.className = 'comment';
+          // Get the review ID from the URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const reviewId = urlParams.get('id');
           
-          const today = new Date();
-          const formattedDate = `${today.toLocaleString('default', { month: 'long' })} ${today.getDate()}, ${today.getFullYear()}`;
-          
-          newComment.innerHTML = `
-            <div class="comment-author">You</div>
-            <div class="comment-date">${formattedDate}</div>
-            <p>${commentText}</p>
-          `;
-          
-          // Insert before the comment form
-          commentSection.insertBefore(newComment, commentForm);
-          
-          // Update comment count
-          const commentsTitle = commentSection.querySelector('.comments-title');
-          if (commentsTitle) {
-            const currentCount = parseInt(commentsTitle.textContent.match(/\d+/)[0]) || 0;
-            commentsTitle.textContent = `Comments (${currentCount + 1})`;
+          if (!reviewId) {
+            showError('Cannot add comment: Review ID not found');
+            return;
           }
           
-          // Clear the textarea
-          commentTextarea.value = '';
+          try {
+            const comment = await submitComment(reviewId, 'You', commentText);
+            
+            if (comment) {
+              // Add the new comment to the UI
+              const commentSection = document.querySelector('.comments-section');
+              const newComment = document.createElement('div');
+              newComment.className = 'comment';
+              
+              newComment.innerHTML = `
+                <div class="comment-author">${comment.author}</div>
+                <div class="comment-date">${new Date(comment.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                <p>${comment.text}</p>
+              `;
+              
+              // Insert before the comment form
+              commentSection.insertBefore(newComment, commentForm);
+              
+              // Update comment count
+              const commentsTitle = commentSection.querySelector('.comments-title');
+              if (commentsTitle) {
+                const currentCount = parseInt(commentsTitle.textContent.match(/\d+/)[0]) || 0;
+                commentsTitle.textContent = `Comments (${currentCount + 1})`;
+              }
+              
+              // Clear the textarea
+              commentTextarea.value = '';
+            }
+          } catch (error) {
+            console.error('Error adding comment:', error);
+            showError('Failed to add comment. Please try again later.');
+          }
         }
       });
     }
   }
 
-   // Initialize the appropriate page based on the current URL
-   function initializeApp() {
+  // Initialize the appropriate page based on the current URL
+  function initializeApp() {
     const currentPath = window.location.pathname;
     
     if (currentPath.includes('review-detail.html')) {
@@ -533,7 +744,6 @@ const state = {
       initMainPage();
     }
   }
-
   
   // Run the initialization when the DOM is fully loaded
   document.addEventListener('DOMContentLoaded', initializeApp);
