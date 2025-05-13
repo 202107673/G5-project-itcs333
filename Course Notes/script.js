@@ -88,30 +88,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const newCourse = {
-                courseCode,
-                title,
-                description,
-                course,
-                createdAt
-            };
+            // const newCourse = {
+            //     courseCode,
+            //     title,
+            //     description,
+            //     course,
+            //     createdAt
+            // };
 
-            fetch('./data.php')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    data.push(newCourse);
-                    console.log('Updated data:', data);
-                    alert('New Cours Added');
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert('Failed');
-                });
+            // fetch('./data.php')
+            //     .then(response => {
+            //         if (!response.ok) {
+            //             throw new Error(`${response.status}`);
+            //         }
+            //         return response.json();
+            //     })
+            //     .then(data => {
+            //         data.push(newCourse);
+            //         console.log('Updated data:', data);
+            //         alert('New Cours Added');
+            //     })
+            //     .catch(error => {
+            //         console.error(error);
+            //         alert('Failed');
+            //     });
         });
     }
 
