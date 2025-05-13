@@ -251,3 +251,250 @@ class DatabaseHelper {
                         ]
                     ];
                 }
+                  // Insert comments for this review
+                if (!empty($sampleComments)) {
+                    $commentStmt = $this->prepare("INSERT INTO `comments` (`review_id`, `author`, `text`) VALUES (?, ?, ?)");
+
+                    foreach ($sampleComments as $comment) {
+                        $commentStmt->execute([$reviewId, $comment['author'], $comment['text']]);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+   
+    public function getReviews($page = 1, $limit = 3, $search = '', $department = '', $difficulty = '', $rating = 0, $sort = 'recent') {
+        // Build the query
+        $sql = "SELECT * FROM `reviews` WHERE 1=1";
+        $params = [];
+
+        // Add search condition if provided
+        if (!empty($search)) {
+            $sql .= " AND (`courseCode` LIKE ? OR `courseTitle` LIKE ? OR `instructor` LIKE ?)";
+            $searchParam = "%$search%";
+            $params[] = $searchParam;
+            $params[] = $searchParam;
+            $params[] = $searchParam;
+        }
+
+        // Add department filter if provided
+        if (!empty($department)) {
+            $sql .= " AND `department` = ?";
+            $params[] = $department;
+        }
+
+        // Add difficulty filter if provided
+        if (!empty($difficulty)) {
+            $sql .= " AND `difficulty` = ?";
+            $params[] = $difficulty;
+        }
+
+        // Add rating filter if provided
+        if ($rating > 0) {
+            $sql .= " AND `rating` >= ?";
+            $params[] = $rating;
+        }
+
+        // Add sorting
+        switch ($sort) {
+            case 'rating-high':
+                $sql .= " ORDER BY `rating` DESC";
+                break;
+            case 'rating-low':
+                $sql .= " ORDER BY `rating` ASC";
+                break;
+            case 'recent':
+            default:
+                $sql .= " ORDER BY `id` DESC";
+                break;
+        }
+
+        // Add pagination
+        $offset = ($page - 1) * $limit;
+        $sql .= " LIMIT ?, ?";
+        $params[] = $offset;
+        $params[] = $limit;
+
+        // Execute the query
+        $stmt = $this->prepare($sql);
+
+        // Bind parameters with their types
+        for ($i = 0; $i < count($params); $i++) {
+            $paramIndex = $i + 1;
+
+            if (is_int($params[$i])) {
+                $stmt->bindValue($paramIndex, $params[$i], PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($paramIndex, $params[$i], PDO::PARAM_STR);
+            }
+        }
+
+        $stmt->execute();
+        $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Get comments for each review
+        foreach ($reviews as &$review) {
+            $review['comments'] = $this->getCommentsByReviewId($review['id']);
+        }
+
+        return $reviews;
+    }
+
+    
+    public function getTotalReviews($search = '', $department = '', $difficulty = '', $rating = 0) {
+        // Build the query
+        $sql = "SELECT COUNT(*) FROM `reviews` WHERE 1=1";
+        $params = [];
+
+        // Add search condition if provided
+        if (!empty($search)) {
+            $sql .= " AND (`courseCode` LIKE ? OR `courseTitle` LIKE ? OR `instructor` LIKE ?)";
+            $searchParam = "%$search%";
+            $params[] = $searchParam;
+            $params[] = $searchParam;
+            $params[] = $searchParam;
+        }
+
+        // Add department filter if provided
+        if (!empty($department)) {
+            $sql .= " AND `department` = ?";
+            $params[] = $department;
+        }
+
+        // Add difficulty filter if provided
+        if (!empty($difficulty)) {
+            $sql .= " AND `difficulty` = ?";
+            $params[] = $difficulty;
+        }
+
+        // Add rating filter if provided
+        if ($rating > 0) {
+            $sql .= " AND `rating` >= ?";
+            $params[] = $rating;
+        }
+
+        // Execute the query
+        $stmt = $this->prepare($sql);
+        $stmt->execute($params);
+
+        return (int)$stmt->fetchColumn();
+    }
+
+   
+    public function getReviewById($id) {
+        $stmt = $this->prepare("SELECT * FROM `reviews` WHERE `id` = ?");
+        $stmt->execute([$id]);
+
+        $review = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($review) {
+            // Get comments for this review
+            $review['comments'] = $this->getCommentsByReviewId($id);
+        }
+
+        return $review;
+    }
+
+   
+    public function createReview($courseCode, $courseTitle, $instructor, $department, $difficulty, $rating, $content, $fullContent) {
+        $stmt = $this->prepare("INSERT INTO `reviews` 
+            (`courseCode`, `courseTitle`, `instructor`, `department`, `difficulty`, `rating`, `content`, `fullContent`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+        $result = $stmt->execute([
+            $courseCode,
+            $courseTitle,
+            $instructor,
+            $department,
+            $difficulty,
+            $rating,
+            $content,
+            $fullContent
+        ]);
+
+        if ($result) {
+            return $this->getPDO()->lastInsertId();
+        }
+
+        return false;
+    }
+
+   
+    public function updateReview($id, $courseCode, $courseTitle, $instructor, $department, $difficulty, $rating, $content, $fullContent) {
+        $stmt = $this->prepare("UPDATE `reviews` SET 
+            `courseCode` = ?, 
+            `courseTitle` = ?, 
+            `instructor` = ?, 
+            `department` = ?, 
+            `difficulty` = ?, 
+            `rating` = ?, 
+            `content` = ?, 
+            `fullContent` = ? 
+            WHERE `id` = ?");
+
+        return $stmt->execute([
+            $courseCode,
+            $courseTitle,
+            $instructor,
+            $department,
+            $difficulty,
+            $rating,
+            $content,
+            $fullContent,
+            $id
+        ]);
+    }
+
+   
+    public function deleteReview($id) {
+        $stmt = $this->prepare("DELETE FROM `reviews` WHERE `id` = ?");
+        return $stmt->execute([$id]);
+    }
+
+   
+    public function getCommentsByReviewId($reviewId) {
+        $stmt = $this->prepare("SELECT * FROM `comments` WHERE `review_id` = ? ORDER BY `date` DESC");
+        $stmt->execute([$reviewId]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+   
+    public function getCommentById($id) {
+        $stmt = $this->prepare("SELECT * FROM `comments` WHERE `id` = ?");
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+   
+    public function addComment($reviewId, $author, $text) {
+        $stmt = $this->prepare("INSERT INTO `comments` (`review_id`, `author`, `text`) VALUES (?, ?, ?)");
+
+        $result = $stmt->execute([$reviewId, $author, $text]);
+
+        if ($result) {
+            return $this->getPDO()->lastInsertId();
+        }
+
+        return false;
+    }
+
+   
+    public function getDepartments() {
+        $stmt = $this->query("SELECT DISTINCT `department` FROM `reviews` ORDER BY `department` ASC");
+
+        $departments = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $departments[] = $row['department'];
+        }
+
+        return $departments;
+    }
+}
+?>
