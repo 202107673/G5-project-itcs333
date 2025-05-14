@@ -11,6 +11,21 @@ const filterSelect = document.querySelectorAll("#listing select")[0];
 const sortSelect = document.querySelectorAll("#listing select")[1];
 const form = document.querySelector("#item-form");
 
+function fetchItemsFromServer() {
+  fetch('https://yaya05773.my-app-1.repl.co/api/get_items.php')  // Replace with your Replit URL
+    .then(response => response.json())
+    .then(data => {
+      items = data;
+      filteredItems = [...items];
+      populateFilterOptions();
+      renderItems();
+      renderPagination();
+    })
+    .catch(err => {
+      console.error("Error fetching items:", err);
+    });
+}
+
 function renderItems() {
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
