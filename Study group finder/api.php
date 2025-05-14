@@ -1,27 +1,11 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-  	<title>PHP + MySQL</title>
-  	<meta charset="UTF-8">
-  </head>
-  <body>
 <?php
-  $host = "127.0.0.1";
-  $user = getenv("db_user");
-  $pass = getenv("db_pass");
-  $db = getenv("db_name");
 
-  $conn = new mysqli($host, $user, $pass, $db);
-  if ($conn->connect_error)
-      die("Connection failed: " . $conn->connect_error);
-  echo "<p>DATABASE connected succesfully!</p>";
-  $conn->close();
-?>
-  </body>
-</html>
-
-<?php
+// Set proper headers for API
 header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type");
+
 require 'db.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -43,7 +27,7 @@ switch ($method) {
                 $data['name'], $data['subject'], $data['description'],
                 $data['location'], $data['meeting_time'], $data['contact_email']
             ]);
-            echo json_encode(['message' => 'Group created successfully']);
+            echo json_encode(['message' => 'Group created successfully', 'id' => $pdo->lastInsertId()]);
         } else {
             http_response_code(400);
             echo json_encode(['error' => 'Missing required fields']);
