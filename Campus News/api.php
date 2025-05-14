@@ -1,21 +1,21 @@
 <?php
-// Database configuration
+
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'campus_news');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
-// Enable error reporting for development
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Set headers for CORS and JSON response
+
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-// Handle preflight requests
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
@@ -39,7 +39,7 @@ class NewsAPI {
         }
     }
 
-    // Get all news articles with pagination and search
+    
     public function getArticles($page = 1, $limit = 6, $search = '', $category = '') {
         try {
             $offset = ($page - 1) * $limit;
@@ -63,12 +63,12 @@ class NewsAPI {
                 $params[] = $category;
             }
             
-            // Get total count for pagination
+            
             $countStmt = $this->conn->prepare(str_replace('a.*, c.name as category_name', 'COUNT(*)', $query));
             $countStmt->execute($params);
             $totalItems = $countStmt->fetchColumn();
             
-            // Get paginated results
+            
             $query .= " ORDER BY a.created_at DESC LIMIT ? OFFSET ?";
             $params[] = (int)$limit;
             $params[] = (int)$offset;
@@ -92,7 +92,7 @@ class NewsAPI {
         }
     }
 
-    // Get single article
+    
     public function getArticle($id) {
         try {
             $query = "SELECT a.*, c.name as category_name 
@@ -105,7 +105,7 @@ class NewsAPI {
             $article = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($article) {
-                // Update view count
+            
                 $updateStmt = $this->conn->prepare("UPDATE {$this->table} SET views = views + 1 WHERE id = ?");
                 $updateStmt->execute([$id]);
                 
@@ -118,10 +118,10 @@ class NewsAPI {
         }
     }
 
-    // Create article
+    
     public function createArticle($data) {
         try {
-            // Get category ID
+            
             $categoryStmt = $this->conn->prepare("SELECT id FROM categories WHERE name = ?");
             $categoryStmt->execute([$data['category']]);
             $categoryId = $categoryStmt->fetchColumn();
@@ -146,10 +146,10 @@ class NewsAPI {
         }
     }
 
-    // Update article
+    
     public function updateArticle($id, $data) {
         try {
-            // Get category ID if category is being updated
+            
             $categoryId = null;
             if (isset($data['category'])) {
                 $categoryStmt = $this->conn->prepare("SELECT id FROM categories WHERE name = ?");
@@ -199,7 +199,7 @@ class NewsAPI {
         }
     }
 
-    // Delete article
+    
     public function deleteArticle($id) {
         try {
             $stmt = $this->conn->prepare("DELETE FROM {$this->table} WHERE id = ?");
@@ -215,7 +215,7 @@ class NewsAPI {
         }
     }
 
-    // Get categories
+    
     public function getCategories() {
         try {
             $stmt = $this->conn->query("SELECT * FROM categories ORDER BY name");
@@ -226,28 +226,28 @@ class NewsAPI {
     }
 }
 
-// Initialize API
+
 $api = new NewsAPI();
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Handle API requests
+
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'categories':
-            // Get categories
+            
             echo json_encode($api->getCategories());
             break;
             
         case 'articles':
             switch ($method) {
                 case 'GET':
-                    // Get single article
+                    
                     if (isset($_GET['id'])) {
                         echo json_encode($api->getArticle($_GET['id']));
                         break;
                     }
                     
-                    // Get articles list with pagination and search
+                    
                     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 6;
                     $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -257,7 +257,7 @@ if (isset($_GET['action'])) {
                     break;
                     
                 case 'POST':
-                    // Create new article
+                    
                     $data = json_decode(file_get_contents('php://input'), true);
                     
                     if (!$data) {
@@ -265,7 +265,7 @@ if (isset($_GET['action'])) {
                         break;
                     }
                     
-                    // Validate required fields
+                    
                     if (empty($data['title']) || empty($data['content']) || empty($data['category'])) {
                         echo json_encode(['status' => 'error', 'message' => 'Missing required fields']);
                         break;
@@ -275,7 +275,7 @@ if (isset($_GET['action'])) {
                     break;
                     
                 case 'PUT':
-                    // Update article
+                    
                     if (!isset($_GET['id'])) {
                         echo json_encode(['status' => 'error', 'message' => 'Article ID required']);
                         break;
@@ -292,7 +292,7 @@ if (isset($_GET['action'])) {
                     break;
                     
                 case 'DELETE':
-                    // Delete article
+                    
                     if (!isset($_GET['id'])) {
                         echo json_encode(['status' => 'error', 'message' => 'Article ID required']);
                         break;
@@ -312,7 +312,7 @@ if (isset($_GET['action'])) {
             break;
     }
 } else {
-    // API Documentation
+    
     header('Content-Type: text/html');
     ?>
     <!DOCTYPE html>

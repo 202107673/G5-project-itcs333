@@ -1,13 +1,13 @@
-// API Configuration
+
 const API_URL = 'https://jsonplaceholder.typicode.com';
 const ITEMS_PER_PAGE = 6;
 
-// State Management
+
 let currentPage = 1;
 let currentCategory = '';
 let currentSort = 'newest';
 
-// DOM Elements
+
 const newsGrid = document.querySelector('.news-grid');
 const searchForm = document.querySelector('.search-form');
 const sortSelect = document.getElementById('sort');
@@ -15,12 +15,12 @@ const paginationNav = document.querySelector('.pagination');
 const articleDetail = document.querySelector('.article-detail');
 const newsForm = document.querySelector('.news-form');
 
-// Loading Indicator
+
 const loadingIndicator = document.createElement('div');
 loadingIndicator.className = 'loading';
 loadingIndicator.textContent = 'Loading...';
 
-// Initialize Application
+
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
     if (path.endsWith('index.html') || path.endsWith('/')) {
@@ -32,23 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// News Listing Page Functions
+
 function initializeNewsListing() {
     loadNews();
     setupNewsListingEvents();
 }
 
 function setupNewsListingEvents() {
-    // Search form
+    
     if (searchForm) {
-        // Handle form submission for search
+        
         searchForm.addEventListener('submit', (e) => {
             e.preventDefault();
             currentPage = 1;
             loadNews();
         });
 
-        // Handle category changes
+        
         const categorySelect = searchForm.querySelector('select');
         categorySelect?.addEventListener('change', () => {
             currentPage = 1;
@@ -56,7 +56,7 @@ function setupNewsListingEvents() {
         });
     }
 
-    // Sort
+    
     sortSelect?.addEventListener('change', () => {
         currentSort = sortSelect.value;
         loadNews();
@@ -69,18 +69,15 @@ async function loadNews() {
         const searchQuery = searchForm?.querySelector('input[type="search"]')?.value?.toLowerCase() || '';
         const categoryFilter = searchForm?.querySelector('select')?.value || '';
 
-        // Fetch all posts for better search (in a real app, this would be handled by the server)
         const response = await fetch(`${API_URL}/posts`);
         if (!response.ok) throw new Error('Failed to fetch news');
         let news = await response.json();
 
-        // Add some sample categories since JSONPlaceholder doesn't have categories
         news = news.map(article => ({
             ...article,
             category: ['academic', 'events', 'sports', 'culture'][Math.floor(Math.random() * 4)]
         }));
 
-        // Client-side filtering
         if (searchQuery) {
             news = news.filter(article =>
                 article.title.toLowerCase().includes(searchQuery) ||
@@ -92,7 +89,6 @@ async function loadNews() {
             news = news.filter(article => article.category === categoryFilter);
         }
 
-        // Client-side sorting
         news.sort((a, b) => {
             if (currentSort === 'newest') return new Date(b.date || b.id) - new Date(a.date || a.id);
             if (currentSort === 'oldest') return new Date(a.date || a.id) - new Date(b.date || b.id);
@@ -134,12 +130,10 @@ function updatePagination(totalItems) {
     if (!paginationNav) return;
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
     
-    // Remove any existing event listeners by replacing the element
     const newPaginationNav = paginationNav.cloneNode(false);
     paginationNav.parentNode.replaceChild(newPaginationNav, paginationNav);
     paginationNav = newPaginationNav;
 
-    // Create Previous button
     const prevButton = document.createElement('button');
     prevButton.textContent = 'Previous';
     prevButton.disabled = currentPage === 1;
@@ -151,11 +145,9 @@ function updatePagination(totalItems) {
     });
     paginationNav.appendChild(prevButton);
 
-    // Create page numbers
     let startPage = Math.max(1, currentPage - 1);
     let endPage = Math.min(totalPages, startPage + 2);
     
-    // Adjust start if we're at the end
     if (endPage - startPage < 2) {
         startPage = Math.max(1, endPage - 2);
     }
@@ -179,7 +171,6 @@ function updatePagination(totalItems) {
         }
     }
 
-    // Create Next button
     const nextButton = document.createElement('button');
     nextButton.textContent = 'Next';
     nextButton.disabled = currentPage === totalPages;
@@ -192,7 +183,6 @@ function updatePagination(totalItems) {
     paginationNav.appendChild(nextButton);
 }
 
-// Article Detail Page Functions
 async function initializeArticleDetail() {
     const urlParams = new URLSearchParams(window.location.search);
     const articleId = urlParams.get('id');
@@ -259,7 +249,6 @@ function setupArticleActions(articleId) {
     });
 }
 
-// Create/Edit Form Functions
 async function initializeCreateForm() {
     if (!newsForm) return;
 
@@ -352,7 +341,6 @@ function validateForm(titleInput, categorySelect, contentTextarea) {
     return isValid;
 }
 
-// Utility Functions
 function showLoading() {
     document.body.appendChild(loadingIndicator);
 }
