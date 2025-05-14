@@ -4,6 +4,10 @@
     padding: 0;
     box-sizing: border-box;
   }
+
+  main {
+    min-height: 100vh;
+  }
   
   body {
     font-family: Arial, sans-serif;

@@ -1,0 +1,73 @@
+[
+  {
+      "id": "sg1",
+      "name": "Calculus Study Group",
+      "subject": "Calculus I",
+      "description": "Weekly study sessions for Calculus I students. We cover homework problems and exam preparation.",
+      "location": "Library Room 204",
+      "meetingTime": "2025-05-15T17:00:00",
+      "contact": "calc-group@example.edu",
+      "members": 8
+  },
+  {
+      "id": "sg2",
+      "name": "Physics Study Buddies",
+      "subject": "Physics II",
+      "description": "Study group for Physics II with focus on electromagnetism and thermodynamics.",
+      "location": "Science Building Room 312",
+      "meetingTime": "2025-05-16T18:30:00",
+      "contact": "physics-group@example.edu",
+      "members": 5
+  },
+  {
+      "id": "sg3",
+      "name": "CS Data Structures Group",
+      "subject": "Computer Science",
+      "description": "Working through data structures and algorithms problems together. All skill levels welcome!",
+      "location": "Computer Lab B",
+      "meetingTime": "2025-05-17T16:00:00",
+      "contact": "cs-group@example.edu",
+      "members": 12
+  },
+  {
+      "id": "sg4",
+      "name": "Organic Chemistry Help",
+      "subject": "Organic Chemistry",
+      "description": "Study group focused on reaction mechanisms and synthesis problems.",
+      "location": "Chemistry Building Room 105",
+      "meetingTime": "2025-05-18T19:00:00",
+      "contact": "ochem-help@example.edu",
+      "members": 6
+  },
+  {
+      "id": "sg5",
+      "name": "Linear Algebra Learners",
+      "subject": "Linear Algebra",
+      "description": "Collaborative learning group for Linear Algebra concepts and applications.",
+      "location": "Math Building Room 208",
+      "meetingTime": "2025-05-19T17:30:00",
+      "contact": "linalg-group@example.edu",
+      "members": 7
+  },
+  {
+      "id": "sg6",
+      "name": "Biology Study Circle",
+      "subject": "Biology",
+      "description": "Weekly discussions on current biology topics and exam preparation.",
+      "location": "Biology Lab 3",
+      "meetingTime": "2025-05-20T18:00:00",
+      "contact": "bio-circle@example.edu",
+      "members": 9
+  },
+  {
+      "id": "sg7",
+      "name": "Programming Fundamentals",
+      "subject": "Computer Science",
+      "description": "Beginner-friendly group learning programming basics in Python and Java.",
+      "location": "Computer Lab A",
+      "meetingTime": "2025-05-21T16:30:00",
+      "contact": "prog-fundamentals@example.edu",
+      "members": 10
+  }
+
+]
