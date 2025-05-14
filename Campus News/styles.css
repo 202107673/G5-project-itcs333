@@ -268,13 +268,21 @@ main {
 }
 
 .btn-primary {
-    background-color: #3498db;
+    background-color: #007BFF;
     color: white;
+    font-weight: 800;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
 }
 
 .btn-secondary {
     background-color: #95a5a6;
     color: white;
+    font-weight: 800;
+}
+.btn-secondary:hover {
+    background-color: #7f8c8d;
 }
 
 .article-detail {
