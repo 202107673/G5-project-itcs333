@@ -22,11 +22,14 @@ body {
 
 .main-header h1 {
     margin-bottom: 0;
+    margin-left: 200px;
+
 }
 
 .main-header nav {
     display: flex;
     gap: 1rem;
+    margin-right: 200px;
 }
 
 .main-header nav a {
