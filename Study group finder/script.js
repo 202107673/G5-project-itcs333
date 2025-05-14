@@ -1,4 +1,3 @@
-
 const searchForm = document.getElementById('searchForm');
 const groupsContainer = document.getElementById('groupsContainer');
 const loadingIndicator = document.getElementById('loading');
@@ -23,7 +22,7 @@ async function fetchStudyGroups() {
         showLoading();
         errorDisplay.textContent = '';
         
-        const response = await fetch('study-group-finder.json');
+        const response = await fetch('https://e13e130b-8132-4ff0-959c-ca94148baa4f-00-1lc4uyx56gpdd.sisko.replit.dev/api.php?action=read');
         if (!response.ok) {
             throw new Error('Failed to fetch study groups');
         }
