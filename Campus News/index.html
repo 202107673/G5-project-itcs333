@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus News</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <h1>Campus News</h1>
+        <nav>
+            <a href="index.html" class="active">News Feed</a>
+            <a href="create.html">Post News</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="controls">
+            <div class="search-section">
+                <form class="search-form">
+                    <input type="search" placeholder="Search news..." aria-label="Search news">
+                    <select aria-label="Category filter">
+                        <option value="">All Categories</option>
+                        <option value="academic">Academic</option>
+                        <option value="events">Events</option>
+                        <option value="sports">Sports</option>
+                        <option value="culture">Culture</option>
+                    </select>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="sort-section">
+                <label for="sort">Sort by:</label>
+                <select id="sort">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="popular">Most Popular</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="news-grid">
+            <!-- Sample News Articles -->
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="category">Academic</span>
+                    <h2>New Research Center Opening</h2>
+                    <p>The university is opening a state-of-the-art research facility...</p>
+                    <div class="meta">
+                        <span class="date">May 14, 2025</span>
+                        <a href="article.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="category">Events</span>
+                    <h2>Annual Science Fair</h2>
+                    <p>Join us for the biggest science fair of the year...</p>
+                    <div class="meta">
+                        <span class="date">May 13, 2025</span>
+                        <a href="article.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="category">sports</span>
+                    <h2>New Research Center Opening</h2>
+                    <p>The university is opening a state-of-the-art research facility...</p>
+                    <div class="meta">
+                        <span class="date">May 14, 2025</span>
+                        <a href="article.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="category">Academic</span>
+                    <h2>New Research Center Opening</h2>
+                    <p>The university is opening a state-of-the-art research facility...</p>
+                    <div class="meta">
+                        <span class="date">May 14, 2025</span>
+                        <a href="article.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="category">Events</span>
+                    <h2>Annual Science Fair</h2>
+                    <p>Join us for the biggest science fair of the year...</p>
+                    <div class="meta">
+                        <span class="date">May 13, 2025</span>
+                        <a href="article.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="category">sports</span>
+                    <h2>New Research Center Opening</h2>
+                    <p>The university is opening a state-of-the-art research facility...</p>
+                    <div class="meta">
+                        <span class="date">May 14, 2025</span>
+                        <a href="article.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <nav class="pagination">
+            <button disabled>Previous</button>
+            <span class="current">1</span>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <button>Next</button>
+
+        </nav>
+    </main>
+
+    <a href="../mainPage.html" class="back-link">Back to home page</a>
+
+    <footer class="footer">
+    <p>&copy; 2025 Campus Hub. All rights reserved.</p>
+  </footer>
+</body>
+</html>
