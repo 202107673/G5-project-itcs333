@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Marketplace</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="marketplace.js"></script>
+  <script defer src="marketplace.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -28,76 +28,52 @@
         <option>Filter by Category</option>
       </select>
       <select class="p-2 border rounded w-full sm:w-1/4">
-  <option disabled selected>Sort by</option>
-  <option>Name A-Z</option>
-  <option>Name Z-A</option>
-  <option>Price Low-High</option>
-  <option>Price High-Low</option>
-</select>
-
+        <option disabled selected>Sort by</option>
+        <option>Name A-Z</option>
+        <option>Name Z-A</option>
+        <option>Price Low-High</option>
+        <option>Price High-Low</option>
+      </select>
     </div>
 
     <a href="#create" class="inline-block mb-4 px-4 py-2 bg-green-500 text-white rounded">Add New Item</a>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-white p-4 shadow rounded">
-        <h3 class="font-bold">Laptop for Sale</h3>
-        <p class="text-sm text-gray-600">Condition: Like New</p>
-        <a href="#detail" class="text-blue-500 text-sm">View Details</a>
-      </div>
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="item-listing"></div>
 
-    <div class="mt-6 flex justify-center gap-2">
-      <button class="px-3 py-1 bg-blue-100 rounded">1</button>
-      <button class="px-3 py-1 bg-blue-100 rounded">2</button>
-    </div>
+    <div class="mt-6 flex justify-center gap-2" id="pagination-controls"></div>
   </section>
 
   <section id="create" class="p-6 bg-white shadow mt-6">
     <h2 class="text-xl font-bold mb-4">Add New Item</h2>
-    <form class="space-y-4">
+    <form id="item-form" class="space-y-4">
+      <input type="hidden" id="edit-id" />
       <div>
         <label class="block mb-1">Item Name <span class="text-red-500">*</span></label>
-        <input type="text" required placeholder="Enter item name" class="w-full p-2 border rounded" />
+        <input type="text" id="name" required placeholder="Enter item name" class="w-full p-2 border rounded" />
       </div>
       <div>
         <label class="block mb-1">Category <span class="text-red-500">*</span></label>
-        <input type="text" required placeholder="e.g. Electronics, Books" class="w-full p-2 border rounded" />
+        <input type="text" id="category" required placeholder="e.g. Electronics, Books" class="w-full p-2 border rounded" />
       </div>
       <div>
         <label class="block mb-1">Description</label>
-        <textarea placeholder="Describe the item" class="w-full p-2 border rounded"></textarea>
+        <textarea id="description" placeholder="Describe the item" class="w-full p-2 border rounded"></textarea>
       </div>
       <div>
         <label class="block mb-1">Price (BHD) <span class="text-red-500">*</span></label>
-        <input type="number" required min="0" placeholder="e.g. 10" class="w-full p-2 border rounded" />
+        <input type="number" id="price" required min="0" placeholder="e.g. 10" class="w-full p-2 border rounded" />
       </div>
       <div class="flex gap-4">
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
-        <a href="#listing" class="px-4 py-2 bg-gray-300 rounded">Cancel</a>
+        <button type="button" id="cancel-btn" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
       </div>
     </form>
   </section>
 
   <section id="detail" class="p-6 mt-6">
     <h2 class="text-xl font-bold mb-4">Item Detail</h2>
-    <div class="bg-white p-4 shadow rounded space-y-2">
-      <h3 class="text-lg font-semibold">Laptop for Sale</h3>
-      <p><strong>Category:</strong> Electronics</p>
-      <p><strong>Description:</strong> Lightly used, includes charger and bag.</p>
-      <p><strong>Price:</strong> 100 BHD</p>
-
-      <div class="flex gap-4 mt-4">
-        <button class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</button>
-        <button class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-      </div>
-
-      <div class="mt-6">
-        <h4 class="font-semibold">Comments</h4>
-        <div class="border-t pt-2 mt-2 text-sm text-gray-600 italic">No comments yet.</div>
-      </div>
-
-      <a href="#listing" class="block mt-4 text-blue-600">Back to Listing</a>
+    <div class="bg-white p-4 shadow rounded space-y-2" id="item-detail">
+      <p class="italic text-gray-500">Click on any item to see its details here.</p>
     </div>
   </section>
 
