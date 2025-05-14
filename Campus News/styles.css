@@ -350,11 +350,24 @@ main {
     color: #666;
 }
 
+
+
 .back-link {
-    display: inline-block;
-    margin-top: 2rem;
-    color: #3498db;
+    color:#fff;
+    background-color: #007BFF;
     text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    display: inline-block;
+    padding: 0.9375em 2.1875em;
+    letter-spacing: 1px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    transition: 0.5s ease;
+    margin-left: 200px;
+}
+.back-link:hover {
+    background-color: #2a5bbf;
 }
 
 @media (max-width: 768px) {
