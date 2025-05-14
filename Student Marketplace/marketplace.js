@@ -1,56 +1,16 @@
-// marketplace.js
 
-// Global variables
 let items = [];
 let currentPage = 1;
 const itemsPerPage = 6;
 let filteredItems = [];
 
-// Elements
-const listingSection = document.querySelector("#listing .grid");
-const paginationSection = document.querySelector("#listing .mt-6.flex");
+const listingSection = document.querySelector("#item-listing");
+const paginationSection = document.querySelector("#pagination-controls");
 const searchInput = document.querySelector("#listing input[type='text']");
 const filterSelect = document.querySelectorAll("#listing select")[0];
 const sortSelect = document.querySelectorAll("#listing select")[1];
-const form = document.querySelector("#create form");
+const form = document.querySelector("#item-form");
 
-// Loading indicator
-function showLoading() {
-  listingSection.innerHTML = '<div class="col-span-3 text-center text-gray-500">Loading...</div>';
-}
-
-// Error message
-function showError(message) {
-  listingSection.innerHTML = `<div class="col-span-3 text-center text-red-500">${message}</div>`;
-}
-
-// Fetch items
-async function fetchItems() {
-  try {
-    showLoading();
-    const response = await fetch('https://64f84e8d824680fd217f6fc5.mockapi.io/api/marketplace/items'); // Use MockAPI or JSONPlaceholder
-    if (!response.ok) {
-      throw new Error('Failed to fetch items');
-    }
-    const data = await response.json();
-    items = data;
-    filteredItems = [...items];
-    populateFilterOptions();
-    renderItems();
-    renderPagination();
-  } catch (error) {
-    showError(error.message);
-  }
-}
-
-// Populate filter options (Categories)
-function populateFilterOptions() {
-  const categories = [...new Set(items.map(item => item.category))];
-  filterSelect.innerHTML = `<option value="">Filter by Category</option>` +
-    categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
-}
-
-// Render items
 function renderItems() {
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
@@ -64,13 +24,12 @@ function renderItems() {
   listingSection.innerHTML = itemsToDisplay.map(item => `
     <div class="bg-white p-4 shadow rounded">
       <h3 class="font-bold">${item.name}</h3>
-      <p class="text-sm text-gray-600">Condition: ${item.condition || 'Unknown'}</p>
+      <p class="text-sm text-gray-600">Condition: ${item.condition || 'New'}</p>
       <a href="#detail" class="text-blue-500 text-sm" onclick="viewDetail('${item.id}')">View Details</a>
     </div>
   `).join('');
 }
 
-// Render pagination
 function renderPagination() {
   const pageCount = Math.ceil(filteredItems.length / itemsPerPage);
   paginationSection.innerHTML = '';
@@ -87,7 +46,12 @@ function renderPagination() {
   }
 }
 
-// Handle search
+function populateFilterOptions() {
+  const categories = [...new Set(items.map(item => item.category))];
+  filterSelect.innerHTML = <option value="">Filter by Category</option> +
+    categories.map(cat => <option value="${cat}">${cat}</option>).join('');
+}
+
 searchInput.addEventListener('input', () => {
   const query = searchInput.value.toLowerCase();
   filteredItems = items.filter(item => item.name.toLowerCase().includes(query));
@@ -96,7 +60,6 @@ searchInput.addEventListener('input', () => {
   renderPagination();
 });
 
-// Handle filter
 filterSelect.addEventListener('change', () => {
   const category = filterSelect.value;
   filteredItems = category ? items.filter(item => item.category === category) : [...items];
@@ -105,7 +68,6 @@ filterSelect.addEventListener('change', () => {
   renderPagination();
 });
 
-// Handle sort
 sortSelect.addEventListener('change', () => {
   const sortType = sortSelect.value;
   if (sortType === "Name A-Z") {
@@ -120,36 +82,50 @@ sortSelect.addEventListener('change', () => {
   renderItems();
 });
 
-// Validate form
 form.addEventListener('submit', (e) => {
   e.preventDefault();
+  const id = document.getElementById('edit-id').value || Date.now().toString();
+  const name = document.getElementById('name').value.trim();
+  const category = document.getElementById('category').value.trim();
+  const description = document.getElementById('description').value.trim();
+  const price = parseFloat(document.getElementById('price').value.trim());
 
-  const inputs = form.querySelectorAll('input[required], textarea[required]');
-  let valid = true;
-
-  inputs.forEach(input => {
-    if (!input.value.trim()) {
-      input.classList.add('border-red-500');
-      valid = false;
-    } else {
-      input.classList.remove('border-red-500');
-    }
-  });
-
-  if (valid) {
-    alert('Item submitted successfully! (Simulation)');
-    form.reset();
-  } else {
+  if (!name || !category || isNaN(price)) {
     alert('Please fill all required fields.');
+    return;
   }
+
+  const existingIndex = items.findIndex(i => i.id === id);
+
+  const newItem = { id, name, category, description, price, condition: 'New' };
+
+  if (existingIndex !== -1) {
+    items[existingIndex] = newItem;
+  } else {
+    items.unshift(newItem);
+  }
+
+  filteredItems = [...items];
+  populateFilterOptions();
+  renderItems();
+  renderPagination();
+  form.reset();
+  document.getElementById('edit-id').value = '';
+  alert('Item saved successfully!');
 });
 
-// Detail view
+// Cancel button clears form
+const cancelBtn = document.getElementById('cancel-btn');
+cancelBtn.addEventListener('click', () => {
+  form.reset();
+  document.getElementById('edit-id').value = '';
+});
+
 function viewDetail(id) {
   const item = items.find(it => it.id == id);
   if (!item) return;
 
-  const detailSection = document.querySelector("#detail .bg-white");
+  const detailSection = document.querySelector("#item-detail");
   detailSection.innerHTML = `
     <h3 class="text-lg font-semibold">${item.name}</h3>
     <p><strong>Category:</strong> ${item.category}</p>
@@ -157,8 +133,8 @@ function viewDetail(id) {
     <p><strong>Price:</strong> ${item.price} BHD</p>
 
     <div class="flex gap-4 mt-4">
-      <button class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</button>
-      <button class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+      <button onclick="editItem('${item.id}')" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</button>
+      <button onclick="deleteItem('${item.id}')" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
     </div>
 
     <div class="mt-6">
@@ -170,5 +146,30 @@ function viewDetail(id) {
   `;
 }
 
-// Initialize
-fetchItems();
+function deleteItem(id) {
+  items = items.filter(i => i.id !== id);
+  filteredItems = [...items];
+  renderItems();
+  renderPagination();
+  document.querySelector("#item-detail").innerHTML = '<p class="italic text-gray-500">Item deleted. Select another to view details.</p>';
+}
+
+function editItem(id) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  document.getElementById('edit-id').value = item.id;
+  document.getElementById('name').value = item.name;
+  document.getElementById('category').value = item.category;
+  document.getElementById('description').value = item.description;
+  document.getElementById('price').value = item.price;
+  window.location.href = "#create";
+}
+
+function init() {
+  filteredItems = [...items];
+  populateFilterOptions();
+  renderItems();
+  renderPagination();
+}
+
+init();
