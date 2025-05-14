@@ -12,7 +12,7 @@ const sortSelect = document.querySelectorAll("#listing select")[1];
 const form = document.querySelector("#item-form");
 
 function fetchItemsFromServer() {
-  fetch('https://yaya05773.my-app-1.repl.co/api/get_items.php')  // Replace with your Replit URL
+  fetch('https://yaya05773.my-app-1.repl.co/api/get_items.php')  
     .then(response => response.json())
     .then(data => {
       items = data;
