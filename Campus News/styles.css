@@ -30,6 +30,7 @@ body {
     display: flex;
     gap: 1rem;
     margin-right: 200px;
+    font-weight:bold;
 }
 
 .main-header nav a {
