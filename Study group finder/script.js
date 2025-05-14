@@ -23,7 +23,7 @@ async function fetchStudyGroups() {
         errorDisplay.textContent = '';
 
         // Updated endpoint to use api.php
-        const response = await fetch('https://e13e130b-8132-4ff0-959c-ca94148baa4f-00-1lc4uyx56gpdd.sisko.replit.dev/api.php');
+        const response = await fetch('https://e13e130b-8132-4ff0-959c-ca94148baa4f-00-1lc4uyx56gpdd.sisko.replit.dev/');
 
         if (!response.ok) {
             throw new Error(`Failed to fetch study groups: ${response.status}`);
